@@ -1,12 +1,25 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import {connect} from './connect'
+
 
 class Header extends Component {
-    render() {
-        return (
-            <h1>React.js小书</h1>
-        )
+    static propTypes = {
+      themeColor: PropTypes.string
     }
-}
-
-export default Header
+  
+    render () {
+      return (
+        <h1 style={{ color: this.props.themeColor }}>React.js 小书</h1>
+      )
+    }
+  }
+  
+  const mapStateToProps = (state) => {
+    return {
+      themeColor: state.themeColor
+    }
+  }
+  Header = connect(mapStateToProps)(Header)
+  
+  export default Header
