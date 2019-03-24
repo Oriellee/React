@@ -2,9 +2,18 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.scss';
 import * as serviceWorker from './serviceWorker';
-import CommentApp from './CommentApp'
+import CommentApp from './containers/CommentApp'
+import commentsReducer from './reduers/comments'
+import {createStore} from "redux";
+import Provider from "react-redux/es/components/Provider";
 
-ReactDOM.render(<CommentApp />, document.getElementById('root'));
+const store = createStore(commentsReducer);
+
+ReactDOM.render(
+    <Provider store={store}>
+        <CommentApp/>
+    </Provider>,
+    document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
