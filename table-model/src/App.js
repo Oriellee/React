@@ -1,96 +1,46 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { Modal, Button, Form, Input, Radio } from 'antd';
+import { Modal, Button, Form, Input, Radio, Card } from 'antd';
 import { Table, Divider, Tag } from 'antd';
+import CollectionCreateForm from './FormTest'
 const { Column, ColumnGroup } = Table;
 
-
-
-const columns = [{
-  title: 'Name',
-  dataIndex: 'name',
-  key: 'name',
-}, {
-  title: 'Age',
-  dataIndex: 'age',
-  key: 'age',
-}, {
-  title: 'Address',
-  dataIndex: 'address',
-  key: 'address',
-}, {
-  title: 'Action',
-  key: 'action',
-  render: (text, record) => (
-    <span>
-      <a href="javascript:;">Invite {record.name}</a>
-      <Divider type="vertical" />
-      <a href="javascript:;">Delete</a>
-    </span>
-  ),
-}];
-
-class FormTest extends React.Component {
-  render() {
-    console.log(this.props, "----------")
-    const {
-      visible, onCancel, onCreate, form,
-    } = this.props;
-    const { getFieldDecorator } = this.props.form;
-    return (
-      <Modal
-        visible={visible}
-        title="Create a new collection"
-        okText="Create"
-        onCancel={onCancel}
-        onOk={onCreate}
-      >
-        <Form layout="vertical">
-          <Form.Item label="username">
-            {getFieldDecorator('username', {
-              rules: [{ required: true, message: 'Please input the name of collection!' }],
-            })(
-              <Input />
-            )}
-          </Form.Item>
-
-          <Form.Item label="age">
-            {getFieldDecorator('age')(<Input />)}
-          </Form.Item>
-          <Form.Item label="address">
-            {getFieldDecorator('address')(<Input />)}
-          </Form.Item>
-        </Form>
-      </Modal>
-    );
-  }
-}
-const CollectionCreateForm = Form.create({
-  name: 'form_in_modal', onFieldsChange(props, changedFields) {
-    props.onChange(changedFields);
-  },
-  mapPropsToFields(props) {
-    return {
-      username: Form.createFormField({
-        ...props.username,
-        value: props.username.value,
-      }),
-    };
-  },
-  onValuesChange(_, values) {
-    console.log(values);
-  },
-})(FormTest);
 
 class App extends Component {
   state = {
     visible: false,
+    type: "add",
     fields: {
-      username: {
-        value: 'benjycui',
-      },
+      name: "0000000",
+      age: 12,
+      address: "242423",
+      key: "11111"
     },
+    columns: [{
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
+    }, {
+      title: 'Age',
+      dataIndex: 'age',
+      key: 'age',
+    }, {
+      title: 'Address',
+      dataIndex: 'address',
+      key: 'address',
+    }, {
+      title: 'Action',
+      key: 'action',
+      render: (text, record) => (
+        <span>
+          <Button onClick={this.Modify.bind(this, record)} >Invite</Button>
+          <Divider type="vertical" />
+          <Button onClick={this.Delete.bind(this, record)}>Delete</Button>
+        </span>
+      ),
+    }],
+
     data: [{
       key: '1',
       name: 'John Brown',
@@ -108,6 +58,34 @@ class App extends Component {
       address: 'Sidney No. 1 Lake Park',
     }]
   }
+  Modify = (row) => {
+    this.setState({
+      fields: row,
+      type: 'modify'
+    })
+    this.showModal();
+  }
+  Delete = (row) => {
+    let data = this.state.data
+    let newdata = []
+    data.forEach((item) => {
+      if (row.key !== item.key) {
+        newdata.push(item)
+      }
+    })
+    this.setState({
+      data: newdata
+    })
+
+  }
+  Add = () => {
+    console.log()
+    this.setState({
+      fields: {},
+      type: 'add'
+    })
+    this.showModal();
+  }
   showModal = () => {
     this.setState({ visible: true });
   }
@@ -123,42 +101,50 @@ class App extends Component {
       if (err) {
         return;
       }
-
-      console.log('Received values of form: ', values);
       form.resetFields();
       let data = this.state.data;
-      let newKey = data[data.length - 1].key + 1;
-      values['key'] = newKey
-      data.push(values)
+      if (this.state.type === 'add') {
+        let newKey = data.length === 0 ? 0 : data[data.length - 1].key + 1;
+        values['key'] = newKey
+        data.push(values)
+      } else if (this.state.type === 'modify') {
+        let oldrow = this.state.fields.key;
+        data.forEach((row, index) => {
+          if (row.key === oldrow) {
+            for (let item in values) {
+              row[item] = values[item]
+            }
+            row['key'] = oldrow
+          }
+        })
+      }
       this.setState({
         visible: false,
-        data: data
-      });
+        data: data,
+        fields: {}
+      })
+
     });
   }
 
   saveFormRef = (formRef) => {
     this.formRef = formRef;
   }
-  handleFormChange = (changedFields) => {
-    this.setState(({ fields }) => ({
-      fields: { ...fields, ...changedFields },
-    }));
-  }
   render() {
     const fields = this.state.fields;
     return (
       <div className="App">
-        <Button type='primary' onClick={this.showModal.bind(this)}>添加</Button>
-        <Button type='primary'>删除</Button>
-        <CollectionCreateForm
-        {...fields} onChange={this.handleFormChange}
-          wrappedComponentRef={this.saveFormRef}
-          visible={this.state.visible}
-          onCancel={this.handleCancel}
-          onCreate={this.handleCreate}
-        />
-        <Table columns={columns} dataSource={this.state.data} />
+        <Card>
+          <Button className='btn' type='primary' onClick={this.Add.bind(this)}>添加</Button>
+          <CollectionCreateForm
+            {...fields}
+            wrappedComponentRef={this.saveFormRef}
+            visible={this.state.visible}
+            onCancel={this.handleCancel}
+            onCreate={this.handleCreate}
+          />
+          <Table columns={this.state.columns} dataSource={this.state.data} />
+        </Card>
       </div>
     );
   }
