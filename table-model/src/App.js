@@ -109,7 +109,6 @@ class App extends Component {
     }]
   }
   showModal = () => {
-    console.log()
     this.setState({ visible: true });
   }
 
