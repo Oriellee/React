@@ -24,6 +24,8 @@
 }
 .btn{
   margin: 20px;
+  float: left;
+  z-index: 99;
 }
 
 @keyframes App-logo-spin {
