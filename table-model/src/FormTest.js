@@ -45,7 +45,6 @@ class FormTest extends React.Component {
 const CollectionCreateForm = Form.create({
   name: 'form_in_modal',
   mapPropsToFields(props) {
-    console.log(props)
     let data = {}
     for (let item in props) {
       if (typeof (props[item]) !== 'function') {
