@@ -7,7 +7,6 @@ import * as serviceWorker from './serviceWorker';
 
 import './index.css';
 import MusicReducer from './reducers/MusicReducer.js';
-import MusicApp from './containers/MusicApp';
 import IndexContainer from './containers/IndexContainer';
 import TestContainer from './containers/TestContainer';
 
@@ -17,8 +16,7 @@ const store = createStore(MusicReducer);
 ReactDOM.render(
     <Provider store={store}>
         <BrowserRouter>
-            <Route exact path='/' component={MusicApp} />
-            <Route path='/index' component={IndexContainer} />
+            <Route exact path='/index' component={IndexContainer} />
             <Route path='/test' component={TestContainer} />
         </BrowserRouter>
     </Provider>,
