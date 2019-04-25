@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import { Icon, Carousel, WingBlank } from 'antd-mobile';
 import ContentTitle from '../components/index/ContentTitle';
 import TypeList from '../components/index/TypeList';
+import '../assets/styles/index.scss';
 
 class IndexContainer extends Component {
     constructor() {
