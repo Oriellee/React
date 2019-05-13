@@ -6,7 +6,6 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import * as serviceWorker from './serviceWorker';
 
 import './index.css';
-import 'antd-mobile/dist/antd-mobile.css';
 
 import MusicReducer from './reducers/MusicReducer.js';
 import IndexContainer from './containers/IndexContainer';

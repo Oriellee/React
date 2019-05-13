@@ -29,7 +29,13 @@ html {
       }
     }
   }
-  .content{
-    margin: ptr(10px);
+  .content {
+    margin: 0;
+    .carousel {
+      height: ptr(50px);
+      .am-wingblank {
+        margin: 0;
+      }
+    }
   }
 }

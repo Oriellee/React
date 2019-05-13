@@ -6,13 +6,14 @@ import ContentTitle from '../components/index/ContentTitle';
 import TypeList from '../components/index/TypeList';
 import '../assets/styles/index.scss';
 
+
 class IndexContainer extends Component {
     constructor() {
         super()
         this.state = {
             data: ['1', '2', '3'],
-            imgHeight: 176,
-            checkedTab: 1
+            imgHeight: "150px",
+            checkedTab: 2
         }
     }
     componentDidMount() {
@@ -58,12 +59,12 @@ class IndexContainer extends Component {
                                         <img
                                             src={`https://zos.alipayobjects.com/rmsportal/${val}.png`}
                                             alt=""
-                                            style={{ width: '100%', verticalAlign: 'top' }}
-                                            onLoad={() => {
-                                                // fire window resize event to change height
-                                                window.dispatchEvent(new Event('resize'));
-                                                this.setState({ imgHeight: 'auto' });
-                                            }}
+                                            style={{ width: '100%', verticalAlign: 'top', height: "100%" }}
+                                        // onLoad={() => {
+                                        //     // fire window resize event to change height
+                                        //     window.dispatchEvent(new Event('resize'));
+                                        //     this.setState({ imgHeight: 'auto' });
+                                        // }}
                                         />
                                     </a>
                                 ))}
