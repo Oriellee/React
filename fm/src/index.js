@@ -6,6 +6,8 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import * as serviceWorker from './serviceWorker';
 
 import './index.css';
+import 'antd-mobile/dist/antd-mobile.css';
+
 import MusicReducer from './reducers/MusicReducer.js';
 import IndexContainer from './containers/IndexContainer';
 import TestContainer from './containers/TestContainer';
@@ -16,7 +18,7 @@ const store = createStore(MusicReducer);
 ReactDOM.render(
     <Provider store={store}>
         <BrowserRouter>
-            <Route exact path='/index' component={IndexContainer} />
+            <Route exact path='/' component={IndexContainer} />
             <Route path='/test' component={TestContainer} />
         </BrowserRouter>
     </Provider>,

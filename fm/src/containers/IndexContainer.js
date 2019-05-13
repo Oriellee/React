@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Icon, Carousel, WingBlank } from 'antd-mobile';
+import { Icon } from 'antd';
+import { Carousel, WingBlank, Flex } from 'antd-mobile';
 import ContentTitle from '../components/index/ContentTitle';
 import TypeList from '../components/index/TypeList';
 import '../assets/styles/index.scss';
@@ -11,6 +12,7 @@ class IndexContainer extends Component {
         this.state = {
             data: ['1', '2', '3'],
             imgHeight: 176,
+            checkedTab: 1
         }
     }
     componentDidMount() {
@@ -21,22 +23,31 @@ class IndexContainer extends Component {
             });
         }, 100);
     }
+    changeTab(tab) {
+        this.setState({
+            checkedTab: tab
+        })
+    }
     render() {
         return (
             <div className='box'>
-                <div className='title'>
-                    <Icon type="menu-fold" />
-                    <title>音乐馆</title>
+                <Flex className='title' justify="between">
+                    <Icon type="menu" />
+                    <div>
+                        <span className={this.state.checkedTab === 1 ? "addTitleCss" : ""} onClick={() => this.changeTab(1)}>我的</span>
+                        <span className={this.state.checkedTab === 2 ? "addTitleCss" : ""} onClick={() => this.changeTab(2)}>音乐馆</span>
+                        <span className={this.state.checkedTab === 3 ? "addTitleCss" : ""} onClick={() => this.changeTab(3)}>发现</span>
+                    </div>
                     <Icon type="search" />
-                </div>
+                </Flex>
                 <div className='content'>
                     <div className="carousel">
                         <WingBlank>
                             <Carousel
                                 autoplay
                                 infinite
-                                beforeChange={(from, to) => console.log(`slide from ${from} to ${to}`)}
-                                afterChange={index => console.log('slide to', index)}
+                                beforeChange={(from, to) => { }}
+                                afterChange={index => { }}
                             >
                                 {this.state.data.map(val => (
                                     <a
