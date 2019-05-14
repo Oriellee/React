@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Icon } from 'antd';
+import { Icon, Input } from 'antd';
 import { Carousel, WingBlank, Flex } from 'antd-mobile';
 import ContentTitle from '../components/index/ContentTitle';
 import TypeList from '../components/index/TypeList';
@@ -31,16 +31,23 @@ class IndexContainer extends Component {
     }
     render() {
         return (
-            <div className='box'>
-                <Flex className='title' justify="between">
-                    <Icon type="menu" />
-                    <div>
-                        <span className={this.state.checkedTab === 1 ? "addTitleCss" : ""} onClick={() => this.changeTab(1)}>我的</span>
-                        <span className={this.state.checkedTab === 2 ? "addTitleCss" : ""} onClick={() => this.changeTab(2)}>音乐馆</span>
-                        <span className={this.state.checkedTab === 3 ? "addTitleCss" : ""} onClick={() => this.changeTab(3)}>发现</span>
+            <div className='pageBox'>
+                <div className='topBox'>
+                    <Flex className='titleBox' justify="between">
+                        <Icon type="menu" />
+                        <div>
+                            <span className={this.state.checkedTab === 1 ? "addTitleCss" : ""} onClick={() => this.changeTab(1)}>我的</span>
+                            <span className={this.state.checkedTab === 2 ? "addTitleCss" : ""} onClick={() => this.changeTab(2)}>音乐馆</span>
+                            <span className={this.state.checkedTab === 3 ? "addTitleCss" : ""} onClick={() => this.changeTab(3)}>发现</span>
+                        </div>
+                        <Icon type="plus" />
+                    </Flex>
+                    <div className='searchBox'>
+                        <Icon type="search" />
+                        <span>搜索</span>
                     </div>
-                    <Icon type="search" />
-                </Flex>
+                </div>
+
                 <div className='content'>
                     <div className="carousel">
                         <WingBlank>

@@ -9,26 +9,48 @@ html {
   @return $px / $browser-default-font-size * 1rem;
 }
 
-.box {
+.pageBox {
   width: 100%;
   height: 100%;
-  .title {
+  .topBox {
     background-color: #ffffff;
     box-shadow: 0px 0px 5px #cacaca;
-    padding: ptr(15px) ptr(20px);
-    color: #cacaca;
-    font-weight: bolder;
-    font-size: ptr(17px);
-    .addTitleCss {
-      color: #222121;
+    padding: ptr(20px) ptr(10px) ptr(10px);
+    .titleBox {
+      color: #cacaca;
+      font-weight: bolder;
+      font-size: ptr(17px);
+      .addTitleCss {
+        color: #222121;
+      }
+      > div {
+        > span {
+          display: inline-block;
+          margin: 0px ptr(5px);
+        }
+      }
     }
-    > div {
+    .searchBox {
+      height: ptr(25px);
+      // border: 1px solid lightgrey;
+      background-color: #f5f1f1;
+      line-height: ptr(25px);
+      color: grey;
+      font-size: ptr(14px);
+      margin: ptr(15px) 0 0;
+      text-align: center;
+      // display: flex;
+      // align-items: center;
+      // justify-content: center;
       > span {
-        display: inline-block;
-        margin: 0px ptr(5px);
+        margin-left: ptr(5px);
+      }
+      > i {
+        line-height: ptr(25px);
       }
     }
   }
+
   .content {
     margin: 0;
     .carousel {
