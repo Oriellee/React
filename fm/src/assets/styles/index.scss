@@ -1,33 +1,18 @@
 $browser-default-font-size: 16px !default; //变量的值可以根据自己需求定义
-$centerFontColor: #222121;
-@function ptr($px) {
-  //$px为需要转换的字号
-  @return $px / $browser-default-font-size * 1rem;
-}
-.clearfix {
-  *zoom: 1;
-}
-.clearfix:after {
-  content: "\0020";
-  display: block;
-  clear: both;
-  width: 0;
-  height: 0;
-}
 
 html {
   font-size: $browser-default-font-size;
-  color: $centerFontColor;
+}
+
+@function ptr($px) {
+  //$px为需要转换的字号
+  @return $px / $browser-default-font-size * 1rem;
 }
 
 .pageBox {
   width: 100%;
   height: 100%;
-  overflow: hidden;
   .topBox {
-    position: fixed;
-    z-index: 99;
-    width: calc(100% - 20px);
     background-color: #ffffff;
     box-shadow: 0px 0px 5px #cacaca;
     padding: ptr(20px) ptr(10px) ptr(10px);
@@ -35,9 +20,8 @@ html {
       color: #cacaca;
       font-weight: bolder;
       font-size: ptr(17px);
-      padding: 0 ptr(5px);
       .addTitleCss {
-        color: $centerFontColor;
+        color: #222121;
       }
       > div {
         > span {
@@ -53,7 +37,7 @@ html {
       line-height: ptr(25px);
       color: grey;
       font-size: ptr(14px);
-      margin: ptr(10px) 0 0;
+      margin: ptr(15px) 0 0;
       text-align: center;
       // display: flex;
       // align-items: center;
@@ -62,74 +46,17 @@ html {
         margin-left: ptr(5px);
       }
       > i {
-        vertical-align: sub;
+        line-height: ptr(25px);
       }
     }
   }
+
   .content {
-    // overflow-y: scroll;
-    margin-top: ptr(86px);
+    margin: 0;
     .carousel {
+      height: ptr(50px);
       .am-wingblank {
         margin: 0;
-      }
-    }
-    .listRow {
-      padding: ptr(20px);
-      .contentTitle {
-        display: flex;
-        justify-content: space-between;
-        > div {
-          font-size: ptr(14px);
-          font-weight: bolder;
-        }
-        > span {
-          font-size: ptr(10px);
-          color: lightgrey;
-        }
-      }
-      .typeList {
-        margin-top: ptr(15px);
-        // height: ptr(110px); // 也可以不设置高度，让高度自适应内容的变化
-        overflow: hidden;
-        .inner {
-          height: 110%; // 高度实际为 300 * 110% = 330px
-          overflow-x: auto;
-          white-space: nowrap;
-          .musicRow {
-            display: inline-block;
-            // width: ptr(100px);
-            // height: ptr(100px);
-            background-color: lightblue;
-            margin-right: ptr(10px);
-            &:last-of-type {
-              margin-right: 0;
-            }
-            > div {
-              position: relative;
-              width: ptr(100px);
-              height: ptr(100px);
-              border: 1px solid red;
-              color: #ffffff;
-              > img {
-                position: absolute;
-                width: 100%;
-                height: 100%;
-              }
-              > i {
-                position: absolute;
-                bottom: ptr(10px);
-                right: ptr(10px);
-                width: ptr(20px);
-                height: ptr(20px);
-              }
-              > svg {
-                width: 100%;
-                height: 100%;
-              }
-            }
-          }
-        }
       }
     }
   }
