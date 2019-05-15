@@ -31,7 +31,7 @@ class IndexContainer extends Component {
     }
     render() {
         return (
-            <div className='pageBox'>
+            <div className='pageBox '>
                 <div className='topBox'>
                     <Flex className='titleBox' justify="between">
                         <Icon type="menu" />
@@ -77,11 +77,10 @@ class IndexContainer extends Component {
                                 ))}
                             </Carousel>
                         </WingBlank>
-
                     </div>
                     <div className='listRow'>
                         <ContentTitle title="歌单分类" url='' />
-                        <TypeList data={this.props.typeList} />
+                        <TypeList list={this.props.typeList} />
                     </div>
                 </div>
             </div>
@@ -91,7 +90,7 @@ class IndexContainer extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        typeList: []
+        typeList: [1, 2, 3, 4, 5, 6, 7]
     }
 };
 
