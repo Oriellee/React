@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 
-class ContentTitle extends Component {
+export default class extends Component {
     render() {
         return (
             <div className='contentTitle'>
@@ -11,4 +11,3 @@ class ContentTitle extends Component {
         )
     }
 }
-export default ContentTitle;

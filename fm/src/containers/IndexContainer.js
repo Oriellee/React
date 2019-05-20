@@ -3,9 +3,11 @@ import { connect } from 'react-redux';
 import { Icon, Input } from 'antd';
 import { Carousel, WingBlank, Flex } from 'antd-mobile';
 import ContentTitle from '../components/index/ContentTitle';
-import TypeList from '../components/index/TypeList';
+import CatTypeList from '../components/index/CatTypeList';
+import CatList from '../components/index/CatList';
 import '../assets/styles/index.scss';
-
+import Service from '../services/index';
+import axiosApi from '../services/extendsApi';
 
 class IndexContainer extends Component {
     constructor() {
@@ -23,6 +25,11 @@ class IndexContainer extends Component {
                 data: ['AiyWuByWklrrUDlFignR', 'TekJlZRVCjLFexlOCuWn', 'IJOtIlfsYdTyaDTRVrLI'],
             });
         }, 100);
+        // let url = '/top/playlist?limit=10&order=new';
+        // axiosApi.sendGet(url, {}).then(res => {
+        //     console.log(res.data)
+        // })
+        Service.demoGet({});
     }
     changeTab(tab) {
         this.setState({
@@ -67,11 +74,6 @@ class IndexContainer extends Component {
                                             src={`https://zos.alipayobjects.com/rmsportal/${val}.png`}
                                             alt=""
                                             style={{ width: '100%', verticalAlign: 'top', height: "100%" }}
-                                        // onLoad={() => {
-                                        //     // fire window resize event to change height
-                                        //     window.dispatchEvent(new Event('resize'));
-                                        //     this.setState({ imgHeight: 'auto' });
-                                        // }}
                                         />
                                     </a>
                                 ))}
@@ -80,7 +82,19 @@ class IndexContainer extends Component {
                     </div>
                     <div className='listRow'>
                         <ContentTitle title="歌单分类" url='' />
-                        <TypeList list={this.props.typeList} />
+                        <CatTypeList list={this.props.typeList} />
+                    </div>
+                    <div className='listRow'>
+                        <ContentTitle title="精品歌单" url='' />
+                        <CatList list={this.props.typeList} />
+                    </div>
+                    <div className='listRow'>
+                        <ContentTitle title="热门歌单" url='' />
+                        <CatList list={this.props.typeList} />
+                    </div>
+                    <div className='listRow'>
+                        <ContentTitle title="新碟上架" url='' />
+                        <CatList list={this.props.typeList} />
                     </div>
                 </div>
             </div>
