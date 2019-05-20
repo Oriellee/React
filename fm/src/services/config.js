@@ -13,7 +13,7 @@ const SERVER_URL = {
         SERVER_URL3: ''
     },
     dev: { // 测试环境
-        SERVER_URL1: 'api',
+        SERVER_URL1: '/api',
         SERVER_URL2: '',
         SERVER_URL3: ''
     }
