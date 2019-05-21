@@ -7,23 +7,24 @@ import * as serviceWorker from './serviceWorker';
 
 import './index.css';
 
-import MusicReducer from './reducers/MusicReducer.js';
-import IndexContainer from './containers/IndexContainer';
+import configureStore from './stores/configureStore';
+
+
+import MainContainer from './containers/MainContainer';
 import TestContainer from './containers/TestContainer';
 
 
-const store = createStore(MusicReducer);
+const store = createStore(configureStore);
+console.log(configureStore,"----------")
 
 ReactDOM.render(
     <Provider store={store}>
         <BrowserRouter>
-            <Route exact path='/' component={IndexContainer} />
+            <Route exact path='/' component={MainContainer} />
             <Route path='/test' component={TestContainer} />
         </BrowserRouter>
     </Provider>,
-    document.getElementById('root'));
+    document.getElementById('root')
+);
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: http://bit.ly/CRA-PWA
 serviceWorker.unregister();

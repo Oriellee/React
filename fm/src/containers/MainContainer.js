@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Icon, Input } from 'antd';
+import { Icon } from 'antd';
 import { Carousel, WingBlank, Flex } from 'antd-mobile';
-import ContentTitle from '../components/index/ContentTitle';
-import CatTypeList from '../components/index/CatTypeList';
-import CatList from '../components/index/CatList';
-import '../assets/styles/index.scss';
-import Service from '../services/index';
-import axiosApi from '../services/extendsApi';
+import ContentTitle from '../components/main/ContentTitle';
+import CatTypeList from '../components/main/CatTypeList';
+import CatList from '../components/main/CatList';
+import '../assets/styles/main.scss';
+import Service from '../services/service';
 
-class IndexContainer extends Component {
+class MainContainer extends Component {
     constructor() {
         super()
         this.state = {
@@ -25,11 +24,12 @@ class IndexContainer extends Component {
                 data: ['AiyWuByWklrrUDlFignR', 'TekJlZRVCjLFexlOCuWn', 'IJOtIlfsYdTyaDTRVrLI'],
             });
         }, 100);
-        // let url = '/top/playlist?limit=10&order=new';
-        // axiosApi.sendGet(url, {}).then(res => {
-        //     console.log(res.data)
-        // })
-        Service.demoGet({});
+        let params = {
+            type: 1
+        }
+        this.props.getBannerList(params, () => {
+            console.log(this.props.bannerList, "-------");
+        });
     }
     changeTab(tab) {
         this.setState({
@@ -104,21 +104,23 @@ class IndexContainer extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        typeList: [1, 2, 3, 4, 5, 6, 7]
+        typeList: [1, 2, 3, 4, 5, 6, 7],
+        bannerList: state.bannerList,
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        // initComments: (comments) => {
-        //     dispatch(initComments(comments))
-        // },
-        // onDeleteComment: (commentIndex) => {
-        //     dispatch(deleteComments(commentIndex))
-        // }
+        getBannerList: (params, cb) => {
+            // console.log(typeof ((dispatch, getState) => Service.getBannerList(dispatch, params, cb)))
+            // return dispatch((dispatch, getState) => Service.getBannerList(dispatch, params, cb));
+            return Service.getBannerList(dispatch, params, cb);
+
+        }
     }
 };
+
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(IndexContainer)
+)(MainContainer)
