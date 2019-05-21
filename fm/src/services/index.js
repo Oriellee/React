@@ -7,7 +7,7 @@ class AllServiceApi extends extendsApi {
     // }
     demoGet(params) {
         let url = '/top/playlist?limit=10&order=new';
-        return this.sendGet(url, params).then(res => {
+        return this.get(url, params).then(res => {
             return res.data
         })
     }

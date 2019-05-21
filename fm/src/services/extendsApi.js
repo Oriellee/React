@@ -18,7 +18,7 @@ class axiosApi {
     //     super()
     // }
 
-    sendGet(url, params = {}, baseUrl) { // get 请求
+    get(url, params = {}, baseUrl) { // get 请求
         if (Object.prototype.toString.call(params) === '[object Object]') {
             _apiFn(baseUrl)
             return api.creatAxios1.get(url, { params: params })
@@ -31,7 +31,7 @@ class axiosApi {
             }
         }
     }
-    sendPost(url, params = {}, baseUrl) { // post 请求
+    post(url, params = {}, baseUrl) { // post 请求
         if (Object.prototype.toString.call(params) === '[object Object]') {
             _apiFn(baseUrl)
             return api.creatAxios1.post(url, qs.stringify(params))
