@@ -37,6 +37,7 @@ class MainContainer extends Component {
         })
     }
     render() {
+        console.log(this.props.bannerList,"this.props.bannerList")
         return (
             <div className='pageBox '>
                 <div className='topBox'>
@@ -64,14 +65,14 @@ class MainContainer extends Component {
                                 beforeChange={(from, to) => { }}
                                 afterChange={index => { }}
                             >
-                                {this.state.data.map(val => (
+                                {this.props.bannerList.map(item => (
                                     <a
-                                        key={val}
+                                        key={item.bannerId}
                                         href="http://www.alipay.com"
                                         style={{ display: 'inline-block', width: '100%', height: this.state.imgHeight }}
                                     >
                                         <img
-                                            src={`https://zos.alipayobjects.com/rmsportal/${val}.png`}
+                                            src={item.pic}
                                             alt=""
                                             style={{ width: '100%', verticalAlign: 'top', height: "100%" }}
                                         />
@@ -112,9 +113,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         getBannerList: (params, cb) => {
-            // console.log(typeof ((dispatch, getState) => Service.getBannerList(dispatch, params, cb)))
-            // return dispatch((dispatch, getState) => Service.getBannerList(dispatch, params, cb));
-            return Service.getBannerList(dispatch, params, cb);
+            return dispatch((dispatch, getState) => Service.getBannerList(dispatch, params, cb));
 
         }
     }

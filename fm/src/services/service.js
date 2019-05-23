@@ -13,8 +13,8 @@ class Service extends extendsApi {
     getBannerList(dispatch, params, cb) {
         let url = Apis.GET_BANNER_LIST;
         this.post(url, params).then(res => {
-            console.log(res.data);
-            dispatch(receiveBannerList(res.data.banner));
+            console.log(res)
+            dispatch(receiveBannerList(res.data.banners));
             cb && cb();
         }).catch(error => {
 

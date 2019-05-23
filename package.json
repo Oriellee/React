@@ -1,0 +1,6 @@
+{
+  "devDependencies": {
+    "customize-cra": "^0.2.12",
+    "react-app-rewired": "^2.1.3"
+  }
+}
