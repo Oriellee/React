@@ -9,4 +9,3 @@ export const receiveBannerList = data => {
         data
     }
 };
-

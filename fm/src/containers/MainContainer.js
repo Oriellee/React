@@ -37,7 +37,7 @@ class MainContainer extends Component {
         })
     }
     render() {
-        console.log(this.props.bannerList,"this.props.bannerList")
+        console.log(this.props.bannerList, "this.props.bannerList")
         return (
             <div className='pageBox '>
                 <div className='topBox'>
@@ -113,8 +113,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         getBannerList: (params, cb) => {
-            return dispatch((dispatch, getState) => Service.getBannerList(dispatch, params, cb));
-
+            return Service.getBannerList(dispatch, params, cb);
         }
     }
 };
