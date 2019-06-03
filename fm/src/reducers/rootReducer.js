@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
 import {
     bannerList,
-} from './main';
+    hotPlayList,
+} from '../action/main';
 
 const rootReducer = combineReducers({
     bannerList,
+    hotPlayList,
 });
 
 export default rootReducer;

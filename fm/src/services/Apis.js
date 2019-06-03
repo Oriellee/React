@@ -6,6 +6,7 @@ class Apis {
          * @type {string}
          */
         this.GET_BANNER_LIST = "banner";//首页轮博页面.
+        this.GET_HOT_PLAY_LIST = "playlist/hot";//首页热门歌单分类.
     }
 }
 

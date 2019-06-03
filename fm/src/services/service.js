@@ -1,5 +1,5 @@
 import extendsApi from './extendsApi';
-import { receiveBannerList } from '../action/main';
+import { receiveBannerList, receiveHotPlayList } from '../action/main';
 import Apicfg from './Apis';
 var Apis = new Apicfg();
 
@@ -13,8 +13,16 @@ class Service extends extendsApi {
     getBannerList(dispatch, params, cb) {
         let url = Apis.GET_BANNER_LIST;
         this.post(url, params).then(res => {
-            console.log(res)
             dispatch(receiveBannerList(res.data.banners));
+            cb && cb();
+        }).catch(error => {
+
+        })
+    }
+    getHotPlayList(dispatch, params, cb) {
+        let url = Apis.GET_HOT_PLAY_LIST;
+        this.post(url, params).then(res => {
+            dispatch(receiveHotPlayList(res.data.tags));
             cb && cb();
         }).catch(error => {
 

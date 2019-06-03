@@ -4,14 +4,17 @@ import React, { Component } from 'react';
 export default class extends Component {
     render() {
         return (
-            <div className='typeList'>
+            <div className='hotPlayList'>
                 <div className='inner'>
                     {
                         this.props.list.map((item, index) =>
-                            <div key={index} className='catTypeRow'>
+                            <div key={index} className='hotPlayRow'>
                                 <div>
-                                    <p>流行歌曲</p>
-                                    <span></span>
+                                    <p>{item.name}</p>
+                                    <div>
+                                        <span>播放量</span>
+                                        <span>{item.usedCount}</span>
+                                    </div>
                                 </div>
                             </div>
                         )

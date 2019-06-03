@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Icon } from 'antd';
 import { Carousel, WingBlank, Flex } from 'antd-mobile';
 import ContentTitle from '../components/main/ContentTitle';
-import CatTypeList from '../components/main/CatTypeList';
+import HotPlayList from '../components/main/HotPlayList';
 import CatList from '../components/main/CatList';
 import '../assets/styles/main.scss';
 import Service from '../services/service';
@@ -12,32 +12,36 @@ class MainContainer extends Component {
     constructor() {
         super()
         this.state = {
-            data: ['1', '2', '3'],
             imgHeight: "150px",
             checkedTab: 2
         }
     }
     componentDidMount() {
-        // simulate img loading
-        setTimeout(() => {
-            this.setState({
-                data: ['AiyWuByWklrrUDlFignR', 'TekJlZRVCjLFexlOCuWn', 'IJOtIlfsYdTyaDTRVrLI'],
-            });
-        }, 100);
-        let params = {
-            type: 1
-        }
-        this.props.getBannerList(params, () => {
-            console.log(this.props.bannerList, "-------");
-        });
+        this.getBannerList();
+        this.getHotPlayList();
     }
+
+    // 切换顶端tab页.
     changeTab(tab) {
         this.setState({
             checkedTab: tab
         })
     }
+
+    // 获取banner列表.
+    getBannerList() {
+        let params = {
+            type: 1 //安卓端.
+        }
+        this.props.getBannerList(params);
+    }
+
+    // 获取歌单分类.
+    getHotPlayList() {
+        this.props.getHotPlayList({});
+    }
+
     render() {
-        console.log(this.props.bannerList, "this.props.bannerList")
         return (
             <div className='pageBox '>
                 <div className='topBox'>
@@ -68,12 +72,12 @@ class MainContainer extends Component {
                                 {this.props.bannerList.map(item => (
                                     <a
                                         key={item.bannerId}
-                                        href="http://www.alipay.com"
+                                        href={item.url}
                                         style={{ display: 'inline-block', width: '100%', height: this.state.imgHeight }}
                                     >
                                         <img
                                             src={item.pic}
-                                            alt=""
+                                            alt="查看"
                                             style={{ width: '100%', verticalAlign: 'top', height: "100%" }}
                                         />
                                     </a>
@@ -83,7 +87,7 @@ class MainContainer extends Component {
                     </div>
                     <div className='listRow'>
                         <ContentTitle title="歌单分类" url='' />
-                        <CatTypeList list={this.props.typeList} />
+                        <HotPlayList list={this.props.hotPlayList} />
                     </div>
                     <div className='listRow'>
                         <ContentTitle title="精品歌单" url='' />
@@ -107,6 +111,7 @@ const mapStateToProps = (state) => {
     return {
         typeList: [1, 2, 3, 4, 5, 6, 7],
         bannerList: state.bannerList,
+        hotPlayList: state.hotPlayList,
     }
 };
 
@@ -114,6 +119,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         getBannerList: (params, cb) => {
             return Service.getBannerList(dispatch, params, cb);
+        },
+        getHotPlayList: (params, cb) => {
+            return Service.getHotPlayList(dispatch, params, cb);
         }
     }
 };
