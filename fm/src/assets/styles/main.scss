@@ -33,7 +33,7 @@ html {
     z-index: 99;
     width: calc(100% - 20px);
     background-color: #ffffff;
-    box-shadow: 0px 0px 5px #cacaca;
+    // box-shadow: 0px 0px 5px #cacaca;
     padding: ptr(20px) ptr(10px) ptr(10px);
     .titleBox {
       color: #cacaca;
@@ -69,12 +69,25 @@ html {
   .content {
     margin-top: ptr(86px);
     .carousel {
+      padding: ptr(10px) ptr(20px) ptr(5px);
       .am-wingblank {
+        border-radius: 10px;
+        overflow: hidden;
         margin: 0;
+        a {
+          height: ptr(135px);
+          width: 100%;
+          display: inline-block;
+          img {
+            width: 100%;
+            height: 100%;
+            vertical-align: top;
+          }
+        }
       }
     }
     .listRow {
-      padding: ptr(20px) ptr(20px) ptr(5px);
+      padding: ptr(10px) ptr(20px) ptr(5px);
       .contentTitle {
         display: flex;
         justify-content: space-between;
@@ -99,16 +112,17 @@ html {
             display: inline-block;
             width: ptr(90px);
             height: ptr(90px);
-            background-color: lightblue;
             margin-right: ptr(10px);
+
             &:last-of-type {
               margin-right: 0;
             }
             > div {
+              border-radius: 10px;
+              overflow: hidden;
               position: relative;
               width: ptr(90px);
               height: ptr(90px);
-              border: 1px solid red;
               color: #ffffff;
               > img {
                 position: absolute;
@@ -140,7 +154,7 @@ html {
       }
       .hotPlayList {
         margin-top: ptr(10px);
-        height: ptr(150px); // 也可以不设置高度，让高度自适应内容的变化
+        height: ptr(130px); // 也可以不设置高度，让高度自适应内容的变化
         overflow: hidden;
         .inner {
           height: 110%; // 高度实际为 300 * 110% = 330px
@@ -149,11 +163,13 @@ html {
 
           .hotPlayRow {
             display: inline-block;
-            width: ptr(120px);
-            // height: ptr(120px);
+            width: ptr(90px);
+            height: ptr(90px);
             margin-right: ptr(10px);
             padding: ptr(15px);
             color: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
             &:last-child {
               margin-right: 0;
             }
@@ -162,7 +178,7 @@ html {
                 font-size: ptr(16px);
                 margin-top: 0;
                 font-weight: 700;
-                margin-bottom: ptr(60px);
+                margin-bottom: ptr(40px);
               }
               > div {
                 display: flex;

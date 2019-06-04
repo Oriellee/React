@@ -9,7 +9,8 @@ import './index.css';
 import configureStore from './stores/configureStore';
 
 
-import MainContainer from './containers/MainContainer';
+import ComponentApp from './containers/ComponentApp';
+import HomeContainer from './containers/HomeContainer';
 import TestContainer from './containers/TestContainer';
 
 const store = configureStore();
@@ -17,8 +18,10 @@ const store = configureStore();
 ReactDOM.render(
     <Provider store={store}>
         <Router>
-            <Route exact path='/' component={MainContainer} />
-            <Route path='/test' component={TestContainer} />
+            <Route path='/' component={ComponentApp} >
+                <Route exact path='/home' component={HomeContainer} />
+                <Route path='/test' component={TestContainer} />
+            </Route>
         </Router>
     </Provider>,
     document.getElementById('root')

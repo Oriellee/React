@@ -8,18 +8,20 @@ import CatList from '../components/main/CatList';
 import '../assets/styles/main.scss';
 import Service from '../services/service';
 
-class MainContainer extends Component {
+class HomeContainer extends Component {
     constructor() {
         super()
         this.state = {
-            imgHeight: "150px",
+            imgHeight: "130px",
             checkedTab: 2
         }
     }
     componentDidMount() {
-        this.getBannerList();
-        this.getHotPlayList();
-        this.getHighQualityPlayList();
+        this.props.getBannerList({ type: 1 });
+        this.props.getHotPlayList({});
+        this.props.getHighQualityPlayList({});
+        this.props.getPersonalized({});
+        this.props.getTopAlbum({});
     }
 
     // 切换顶端tab页.
@@ -29,23 +31,6 @@ class MainContainer extends Component {
         })
     }
 
-    // 获取banner列表.
-    getBannerList() {
-        let params = {
-            type: 1 //安卓端.
-        }
-        this.props.getBannerList(params);
-    }
-
-    // 获取歌单分类.
-    getHotPlayList() {
-        this.props.getHotPlayList({});
-    }
-
-    //获取精品歌单.
-    getHighQualityPlayList() {
-        this.props.getHighQualityPlayList({});
-    }
 
     render() {
         return (
@@ -65,7 +50,6 @@ class MainContainer extends Component {
                         <span>搜索</span>
                     </div>
                 </div>
-
                 <div className='content'>
                     <div className="carousel">
                         <WingBlank>
@@ -79,12 +63,12 @@ class MainContainer extends Component {
                                     <a
                                         key={item.bannerId}
                                         href={item.url}
-                                        style={{ display: 'inline-block', width: '100%', height: this.state.imgHeight }}
+                                    // style={{ display: 'inline-block', width: '100%', height: this.state.imgHeight }}
                                     >
                                         <img
                                             src={item.pic}
                                             alt="查看"
-                                            style={{ width: '100%', verticalAlign: 'top', height: "100%" }}
+                                        // style={{ width: '100%', verticalAlign: 'top', height: "100%" }}
                                         />
                                     </a>
                                 ))}
@@ -97,15 +81,15 @@ class MainContainer extends Component {
                     </div>
                     <div className='listRow'>
                         <ContentTitle title="精品歌单" url='' />
-                        <CatList list={this.props.highQualityPlayList} />
+                        <CatList list={this.props.highQualityPlayList} name="name" url="coverImgUrl" />
                     </div>
                     <div className='listRow'>
-                        <ContentTitle title="热门歌单" url='' />
-                        <CatList list={this.props.typeList} />
+                        <ContentTitle title="推荐歌单" url='' />
+                        <CatList list={this.props.personalizedList} name="name" url="picUrl" />
                     </div>
                     <div className='listRow'>
                         <ContentTitle title="新碟上架" url='' />
-                        <CatList list={this.props.typeList} />
+                        <CatList list={this.props.topAlbum} name="name" url="picUrl" />
                     </div>
                 </div>
             </div>
@@ -115,10 +99,11 @@ class MainContainer extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        typeList: [1, 2, 3, 4, 5, 6, 7],
         bannerList: state.bannerList,
         hotPlayList: state.hotPlayList,
         highQualityPlayList: state.highQualityPlayList,
+        personalizedList: state.personalizedList,
+        topAlbum: state.topAlbum,
     }
 };
 
@@ -133,10 +118,16 @@ const mapDispatchToProps = (dispatch) => {
         getHighQualityPlayList: (params, cb) => {
             return Service.getHighQualityPlayList(dispatch, params, cb);
         },
+        getPersonalized: (params, cb) => {
+            return Service.getPersonalized(dispatch, params, cb);
+        },
+        getTopAlbum: (params, cb) => {
+            return Service.getTopAlbum(dispatch, params, cb);
+        },
     }
 };
 
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(MainContainer)
+)(HomeContainer)

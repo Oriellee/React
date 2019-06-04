@@ -11,10 +11,10 @@ export default class extends Component {
                         this.props.list.map((item, index) =>
                             <div key={index} className='musicRow'>
                                 <div>
-                                    <img alt='' src={item.coverImgUrl} />
+                                    <img alt='' src={item[this.props.url]} />
                                     <Icon type="play-circle" width={'1.25em'} height={'1.25em'} />
                                 </div>
-                                <p>{item.name}</p>
+                                <p>{item[this.props.name]}</p>
                             </div>
                         )
                     }
