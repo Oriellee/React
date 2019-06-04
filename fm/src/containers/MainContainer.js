@@ -19,6 +19,7 @@ class MainContainer extends Component {
     componentDidMount() {
         this.getBannerList();
         this.getHotPlayList();
+        this.getHighQualityPlayList();
     }
 
     // 切换顶端tab页.
@@ -39,6 +40,11 @@ class MainContainer extends Component {
     // 获取歌单分类.
     getHotPlayList() {
         this.props.getHotPlayList({});
+    }
+
+    //获取精品歌单.
+    getHighQualityPlayList() {
+        this.props.getHighQualityPlayList({});
     }
 
     render() {
@@ -91,7 +97,7 @@ class MainContainer extends Component {
                     </div>
                     <div className='listRow'>
                         <ContentTitle title="精品歌单" url='' />
-                        <CatList list={this.props.typeList} />
+                        <CatList list={this.props.highQualityPlayList} />
                     </div>
                     <div className='listRow'>
                         <ContentTitle title="热门歌单" url='' />
@@ -112,6 +118,7 @@ const mapStateToProps = (state) => {
         typeList: [1, 2, 3, 4, 5, 6, 7],
         bannerList: state.bannerList,
         hotPlayList: state.hotPlayList,
+        highQualityPlayList: state.highQualityPlayList,
     }
 };
 
@@ -122,7 +129,10 @@ const mapDispatchToProps = (dispatch) => {
         },
         getHotPlayList: (params, cb) => {
             return Service.getHotPlayList(dispatch, params, cb);
-        }
+        },
+        getHighQualityPlayList: (params, cb) => {
+            return Service.getHighQualityPlayList(dispatch, params, cb);
+        },
     }
 };
 

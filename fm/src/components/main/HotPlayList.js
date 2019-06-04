@@ -8,7 +8,7 @@ export default class extends Component {
                 <div className='inner'>
                     {
                         this.props.list.map((item, index) =>
-                            <div key={index} className='hotPlayRow'>
+                            <div key={index} className={'hotPlayRow hotPlayRowColor' + (index+1)}>
                                 <div>
                                     <p>{item.name}</p>
                                     <div>

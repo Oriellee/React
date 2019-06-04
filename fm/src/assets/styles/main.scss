@@ -4,7 +4,8 @@ $centerFontColor: #222121;
   //$px为需要转换的字号
   @return $px / $browser-default-font-size * 1rem;
 }
-$colors: red, orange, yellow, green, blue, purple;
+$colors: red, orange, yellow, green, blue, purple, red, orange, yellow, green, blue, purple, red, orange, yellow, green,
+  blue, purple, red, orange, yellow, green, blue, purple;
 .clearfix {
   *zoom: 1;
 }
@@ -51,16 +52,12 @@ html {
     }
     .searchBox {
       height: ptr(25px);
-      // border: 1px solid lightgrey;
       background-color: #f5f1f1;
       line-height: ptr(25px);
       color: grey;
       font-size: ptr(14px);
       margin: ptr(10px) 0 0;
       text-align: center;
-      // display: flex;
-      // align-items: center;
-      // justify-content: center;
       > span {
         margin-left: ptr(5px);
       }
@@ -70,7 +67,6 @@ html {
     }
   }
   .content {
-    // overflow-y: scroll;
     margin-top: ptr(86px);
     .carousel {
       .am-wingblank {
@@ -150,34 +146,34 @@ html {
           height: 110%; // 高度实际为 300 * 110% = 330px
           overflow-x: auto;
           white-space: nowrap;
+
           .hotPlayRow {
-            border: 1px solid red;
             display: inline-block;
             width: ptr(120px);
-            height: ptr(120px);
+            // height: ptr(120px);
             margin-right: ptr(10px);
-            &:last-of-type {
+            padding: ptr(15px);
+            color: #ffffff;
+            &:last-child {
               margin-right: 0;
             }
-            $steelBlue: #2d3847;
-            $landingNavBlue: #424c59;
-            $landingNavGreyBlue: #57606c;
-
-            /*Step 2: Add the colors to a list*/
-            $list: $steelBlue, $landingNavBlue, $landingNavGreyBlue;
-
-            $random-color: random(length($list));
-
-            /*return an item from the list based on the random number*/
-            padding: ptr(10px);
-            color: #ffffff;
-            background: nth($list, $random-color);
-            > p {
-              font-size: ptr(18px);
-            }
             > div {
-              display: flex;
-              flex-direction: column;
+              > p {
+                font-size: ptr(16px);
+                margin-top: 0;
+                font-weight: 700;
+                margin-bottom: ptr(60px);
+              }
+              > div {
+                display: flex;
+                flex-direction: column;
+              }
+            }
+          }
+          @for $i from 1 through 20 {
+            .hotPlayRowColor#{$i} {
+              background: nth($colors, $i);
+              box-shadow: 4px 4px 3px nth($colors, $i);
             }
           }
         }
