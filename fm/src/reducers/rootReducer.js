@@ -5,6 +5,8 @@ import {
     highQualityPlayList,
     personalizedList,
     topAlbum,
+    nowPlaySongId,
+    songDetail,
 } from '../action/main';
 
 const rootReducer = combineReducers({
@@ -13,6 +15,8 @@ const rootReducer = combineReducers({
     highQualityPlayList,
     personalizedList,
     topAlbum,
+    nowPlaySongId,
+    songDetail,
 });
 
 export default rootReducer;

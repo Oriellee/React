@@ -16,13 +16,26 @@ class PlayerContainer extends Component {
         }
     }
     componentDidMount() {
+        this.getSongDetail();
+    }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.nowPlaySongId !== this.props.nowPlaySongId) {
+            this.getSongDetail();
+        }
+    }
+
+    getSongDetail() {
+        let params = {
+            ids: this.props.nowPlaySongId
+        }
+        this.props.getSongDetail(params);
     }
 
     render() {
         return (
             <div className='PlayerBox '>
-                {/* <div className='nowPlayInfo'>
+                <div className='nowPlayInfo'>
                     <div className='nowPlayInfoImg'>
                         <img src={this.props.songDetail.ar && this.props.songDetail.ar.name} alt='' />
                     </div>
@@ -34,7 +47,7 @@ class PlayerContainer extends Component {
                 <div className='nowPlayOption'>
                     <Icon type="play-circle" />
                     <Icon type="menu" />
-                </div> */}
+                </div>
             </div>
         )
     }
@@ -42,14 +55,17 @@ class PlayerContainer extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        // songDetail: state.songDetail
+        songDetail: state.songDetail,
+        nowPlaySongId: state.nowPlaySongId,
 
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-
+        getSongDetail: (params, cb) => {
+            return Service.getSongDetail(dispatch, params, cb);
+        },
     }
 };
 
