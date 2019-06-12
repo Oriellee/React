@@ -210,7 +210,7 @@ html {
   }
   .playerOperate {
     width: 100%;
-    height: calc(100% - 1px);
+    height: calc(100% - 2px);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -249,10 +249,17 @@ html {
       margin-right: ptr(12px);
       display: flex;
       align-items: center;
-      > i {
-        > svg {
+      > button {
+        width: 18px;
+        height: 18px;
+        padding: 0;
+        > i {
           width: 18px;
           height: 18px;
+          > svg {
+            width: 18px;
+            height: 18px;
+          }
         }
         &:first-child {
           margin-right: ptr(15px);

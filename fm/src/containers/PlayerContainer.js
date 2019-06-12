@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Icon, Progress } from 'antd';
+import { Icon, Button } from 'antd';
+import { Slider } from 'antd-mobile';
+
 import '../assets/styles/main.scss';
 import Service from '../services/service';
 
@@ -21,10 +23,11 @@ class PlayerContainer extends Component {
             // 当前的播放模式 1列表循环 2随机 3单曲
             playMode: 1,
             // 歌单显示控制
-            isMusicListShow: false
+            isMusicListShow: false,
+            isCanPlay: false,
         }
     }
-    
+
     componentDidMount() {
         this.getSongDetail();
         this.getSongUrl();
@@ -46,7 +49,8 @@ class PlayerContainer extends Component {
             //获取总时间
             const totalTime = parseInt(audio.duration);
             this.setState({
-                totalTime: this.getTime(totalTime)
+                totalTime: this.getTime(totalTime),
+                isCanPlay: true,
             });
         });
         // 播放中添加时间变化监听
@@ -162,7 +166,8 @@ class PlayerContainer extends Component {
     // 获取播放歌曲url.
     getSongUrl() {
         let params = {
-            id: this.props.nowPlaySongId
+            id: this.props.nowPlaySongId,
+            br: 320000,
         }
         this.props.getSongUrl(params);
     }
@@ -173,6 +178,12 @@ class PlayerContainer extends Component {
         this.setState({ playStatus: status }, () => {
             status ? audio.play() : audio.pause();
         });
+    }
+
+    // 设置进度条.
+    changeProgress = (value) => {
+        const audio = this.audio;
+        audio.currentTime = (value / 100) * audio.duration;
     }
 
     render() {
@@ -189,15 +200,43 @@ class PlayerContainer extends Component {
                         </div>
                     </div>
                     <div className='nowPlayOption'>
-                        {this.state.playStatus ? <Icon onClick={() => this.changePlayStatus(false)} type="pause-circle" /> : <Icon onClick={() => this.changePlayStatus(true)} type="play-circle" />}
-                        <Icon type="menu" />
+                        {
+                            this.state.playStatus ?
+                                <Button type="ghost" shape="circle-outline" icon="pause-circle" disabled={!this.state.isCanPlay} onClick={() => this.changePlayStatus(false)} />
+                                : <Button type="ghost" shape="circle-outline" icon="play-circle" disabled={!this.state.isCanPlay} onClick={() => this.changePlayStatus(true)} />
+                        }
+                        <Button type="ghost" shape="circle-outline" icon="menu" disabled={!this.state.isCanPlay} />
                         <audio ref={ref => (this.audio = ref)} id="audio" preload="metadata"
                             src={this.props.songUrl.url && this.props.songUrl.url}>
                         </audio>
                     </div>
                 </div>
                 <div className='playerProgress'>
-                    <Progress strokeWidth={1} strokeColor='#c56276' percent={this.state.progress} showInfo={false} />
+                    {/* <Progress strokeWidth={1} strokeColor='#c56276' percent={this.state.progress} showInfo={false} /> */}
+                    <Slider
+                        style={{}}
+                        value={this.state.progress}
+                        onChange={this.changeProgress}
+                        // onAfterChange={this.changeProgress}
+                        trackStyle={{
+                            backgroundColor: '#c56276',
+                            height: '2px',
+                        }}
+                        railStyle={{
+                            backgroundColor: '#5a5a5a',
+                            height: '2px',
+                        }}
+                        handleStyle={{
+                            height: '0px',
+                            width: '0px',
+                            marginLeft: '-3px',
+                            marginTop: '-1px',
+                            backgroundColor: '#c56276',
+                            borderColor: '#c56276',
+                        }}
+                        disabled={!this.state.isCanPlay}
+                    />
+                    {/* <Slider  value={this.state.progress}/> */}
                 </div>
             </div>
         )
