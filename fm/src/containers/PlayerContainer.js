@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Icon, Button } from 'antd';
-import { Slider } from 'antd-mobile';
+import { Button } from 'antd';
+import { Slider, List, Drawer } from 'antd-mobile';
 
 import '../assets/styles/main.scss';
 import Service from '../services/service';
-
 
 class PlayerContainer extends Component {
     constructor(props) {
@@ -23,7 +22,7 @@ class PlayerContainer extends Component {
             // 当前的播放模式 1列表循环 2随机 3单曲
             playMode: 1,
             // 歌单显示控制
-            isMusicListShow: false,
+            isSongPlayListShow: false,
             isCanPlay: false,
         }
     }
@@ -186,7 +185,36 @@ class PlayerContainer extends Component {
         audio.currentTime = (value / 100) * audio.duration;
     }
 
+    showDrawer = () => {
+        console.log("aaa")
+        this.setState({
+            isSongPlayListShow: !this.state.isSongPlayListShow,
+        }, () => {
+            console.log(this.state)
+        });
+    };
+
+    onClose = () => {
+        this.setState({
+            isSongPlayListShow: false,
+        });
+    };
+
     render() {
+        const sidebar = (<List>
+            {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map((i, index) => {
+                if (index === 0) {
+                    return (<List.Item key={index}
+                        thumb="https://zos.alipayobjects.com/rmsportal/eOZidTabPoEbPeU.png"
+                        multipleLine
+                    >Category</List.Item>);
+                }
+                return (<List.Item key={index}
+                    thumb="https://zos.alipayobjects.com/rmsportal/eOZidTabPoEbPeU.png"
+                >Category{index}</List.Item>);
+            })}
+        </List>);
+
         return (
             <div className='PlayerBox'>
                 <div className='playerOperate'>
@@ -205,19 +233,17 @@ class PlayerContainer extends Component {
                                 <Button type="ghost" shape="circle-outline" icon="pause-circle" disabled={!this.state.isCanPlay} onClick={() => this.changePlayStatus(false)} />
                                 : <Button type="ghost" shape="circle-outline" icon="play-circle" disabled={!this.state.isCanPlay} onClick={() => this.changePlayStatus(true)} />
                         }
-                        <Button type="ghost" shape="circle-outline" icon="menu" disabled={!this.state.isCanPlay} />
+                        <Button type="ghost" shape="circle-outline" icon="menu" onClick={this.showDrawer} disabled={!this.state.isCanPlay} />
                         <audio ref={ref => (this.audio = ref)} id="audio" preload="metadata"
                             src={this.props.songUrl.url && this.props.songUrl.url}>
                         </audio>
                     </div>
                 </div>
                 <div className='playerProgress'>
-                    {/* <Progress strokeWidth={1} strokeColor='#c56276' percent={this.state.progress} showInfo={false} /> */}
                     <Slider
                         style={{}}
                         value={this.state.progress}
                         onChange={this.changeProgress}
-                        // onAfterChange={this.changeProgress}
                         trackStyle={{
                             backgroundColor: '#c56276',
                             height: '2px',
@@ -230,14 +256,40 @@ class PlayerContainer extends Component {
                             height: '0px',
                             width: '0px',
                             marginLeft: '-3px',
-                            marginTop: '-1px',
+                            marginTop: '0px',
                             backgroundColor: '#c56276',
                             borderColor: '#c56276',
                         }}
                         disabled={!this.state.isCanPlay}
                     />
-                    {/* <Slider  value={this.state.progress}/> */}
                 </div>
+                {/* <div className='songPlayListBox'> */}
+                {/* <Drawer
+                    title="Basic Drawer"
+                    placement='bottom'
+                    closable={false}
+                    onClose={this.onClose}
+                    visible={this.state.isSongPlayListShow}
+                >
+                    <p>Some contents...</p>
+                    <p>Some contents...</p>
+                    <p>Some contents...</p>
+                </Drawer> */}
+                
+      <Drawer
+        className="my-drawer"
+        style={{ minHeight: document.documentElement.clientHeight }}
+        enableDragHandle
+        contentStyle={{ color: '#A6A6A6', textAlign: 'center', paddingTop: 42 }}
+        sidebar={sidebar}
+        open={this.state.isSongPlayListShow}
+        onOpenChange={this.showDrawer}
+        position='bottom'
+      >
+        Click upper-left corner
+      </Drawer>
+                {/* </div> */}
+
             </div>
         )
     }

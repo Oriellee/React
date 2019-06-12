@@ -8,6 +8,7 @@ import {
     nowPlaySongId,
     songDetail,
     songUrl,
+    songPlayList,
 } from '../action/main';
 
 const rootReducer = combineReducers({
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
     nowPlaySongId,
     songDetail,
     songUrl,
+    songPlayList,
 });
 
 export default rootReducer;
