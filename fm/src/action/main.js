@@ -6,6 +6,7 @@ export const GET_PERSONALIZED = "GET_PERSONALIZED";
 export const GET_TOP_ALBUM = "GET_TOP_ALBUM";
 export const GET_SONG_DETAIL = "GET_SONG_DETAIL";
 export const CHANGE_NOW_PLAY_SONG_ID = "CHANGE_NOW_PLAY_SONG_ID";
+export const GET_SONG_URL = "GET_SONG_URL";
 
 
 //action creators
@@ -53,6 +54,13 @@ export const receiveSongDetail = data => {
 export const receiveNowPlaySongId = data => {
     return {
         type: CHANGE_NOW_PLAY_SONG_ID,
+        data
+    }
+};
+
+export const receiveSongUrl = data => {
+    return {
+        type: GET_SONG_URL,
         data
     }
 };
@@ -117,6 +125,15 @@ export function songDetail(state = {}, action) {
 export function nowPlaySongId(state = 254285, action) {
     switch (action.type) {
         case CHANGE_NOW_PLAY_SONG_ID:
+            return action.data;
+        default:
+            return state;
+    }
+};
+
+export function songUrl(state = {}, action) {
+    switch (action.type) {
+        case GET_SONG_URL:
             return action.data;
         default:
             return state;

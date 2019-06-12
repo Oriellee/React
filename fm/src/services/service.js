@@ -1,5 +1,5 @@
 import extendsApi from './extendsApi';
-import { receiveBannerList, receiveHotPlayList, receiveHighQualityPlayList, receivePersonalized, receiveTopAlbum } from '../action/main';
+import { receiveBannerList, receiveHotPlayList, receiveHighQualityPlayList, receivePersonalized, receiveTopAlbum, receiveSongDetail,receiveSongUrl} from '../action/main';
 import Apicfg from './Apis';
 var Apis = new Apicfg();
 
@@ -50,6 +50,24 @@ class Service extends extendsApi {
         let url = Apis.GET_TOP_ALBUM;
         this.post(url, params).then(res => {
             dispatch(receiveTopAlbum(res.data.albums));
+            cb && cb();
+        }).catch(error => {
+
+        })
+    }
+    getSongDetail(dispatch, params, cb) {
+        let url = Apis.GET_SONG_DETAIL;
+        this.post(url, params).then(res => {
+            dispatch(receiveSongDetail(res.data.songs[0]));
+            cb && cb();
+        }).catch(error => {
+
+        })
+    }
+    getSongUrl(dispatch, params, cb) {
+        let url = Apis.GET_SONG_URL;
+        this.post(url, params).then(res => {
+            dispatch(receiveSongUrl(res.data.data[0]));
             cb && cb();
         }).catch(error => {
 
