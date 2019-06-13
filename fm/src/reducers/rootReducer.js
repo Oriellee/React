@@ -9,6 +9,7 @@ import {
     songDetail,
     songUrl,
     songPlayList,
+    songPlayListIds,
 } from '../action/main';
 
 const rootReducer = combineReducers({
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
     songDetail,
     songUrl,
     songPlayList,
+    songPlayListIds,
 });
 
 export default rootReducer;

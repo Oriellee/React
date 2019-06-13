@@ -4,10 +4,10 @@ import Provider from 'react-redux/es/components/Provider';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import * as serviceWorker from './serviceWorker';
 
+import 'antd/dist/antd.css';
 import './index.css';
 
 import configureStore from './stores/configureStore';
-
 
 import ComponentApp from './containers/ComponentApp';
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Button } from 'antd';
-import { Slider, List, Drawer } from 'antd-mobile';
+import { Button, Drawer, Icon } from 'antd';
+import { Slider } from 'antd-mobile';
 
 import '../assets/styles/main.scss';
 import Service from '../services/service';
@@ -25,12 +25,14 @@ class PlayerContainer extends Component {
             isSongPlayListShow: false,
             isCanPlay: false,
         }
+        this.getSongPlayList = this.getSongPlayList.bind(this);
     }
 
     componentDidMount() {
         this.getSongDetail();
         this.getSongUrl();
         this.initSongSetting();
+        this.getSongPlayList();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -171,6 +173,14 @@ class PlayerContainer extends Component {
         this.props.getSongUrl(params);
     }
 
+    // 根据列表id,获取所有列表歌曲详情.
+    getSongPlayList() {
+        let params = {
+            ids: this.props.songPlayListIds.join(","),
+        }
+        this.props.getSongPlayList(params);
+    }
+
     // 修改播放状态.
     changePlayStatus(status) {
         const audio = this.audio;
@@ -185,36 +195,37 @@ class PlayerContainer extends Component {
         audio.currentTime = (value / 100) * audio.duration;
     }
 
-    showDrawer = () => {
-        console.log("aaa")
+    // 展开关闭播放列表.
+    changeSongPlayListStatus = (status) => {
         this.setState({
-            isSongPlayListShow: !this.state.isSongPlayListShow,
-        }, () => {
-            console.log(this.state)
+            isSongPlayListShow: status,
         });
     };
 
-    onClose = () => {
-        this.setState({
-            isSongPlayListShow: false,
-        });
-    };
+    // 删除播放列表中的歌曲.
+    delSongPlayRow(row) {
+        let songPlayListIds = [...this.props.songPlayListIds];
+        songPlayListIds.forEach((item, index) => {
+            if (row.id === item) {
+                songPlayListIds.splice(index, 1);
+            }
+        })
+        this.props.changeSongPlayListIds(songPlayListIds, this.getSongPlayList);
+    }
+
+    // 清空播放列表.
+    allDelSongPlayList() {
+        this.props.changeSongPlayListIds([]);
+    }
+
 
     render() {
-        const sidebar = (<List>
-            {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map((i, index) => {
-                if (index === 0) {
-                    return (<List.Item key={index}
-                        thumb="https://zos.alipayobjects.com/rmsportal/eOZidTabPoEbPeU.png"
-                        multipleLine
-                    >Category</List.Item>);
-                }
-                return (<List.Item key={index}
-                    thumb="https://zos.alipayobjects.com/rmsportal/eOZidTabPoEbPeU.png"
-                >Category{index}</List.Item>);
-            })}
-        </List>);
-
+        const drawerTitle = <div className='drawerTitle'>
+            <span>播放列表({this.props.songPlayList.length}首)</span>
+            <div>
+                <Icon type="delete" onClick={this.allDelSongPlayList} />
+            </div>
+        </div>
         return (
             <div className='PlayerBox'>
                 <div className='playerOperate'>
@@ -233,7 +244,7 @@ class PlayerContainer extends Component {
                                 <Button type="ghost" shape="circle-outline" icon="pause-circle" disabled={!this.state.isCanPlay} onClick={() => this.changePlayStatus(false)} />
                                 : <Button type="ghost" shape="circle-outline" icon="play-circle" disabled={!this.state.isCanPlay} onClick={() => this.changePlayStatus(true)} />
                         }
-                        <Button type="ghost" shape="circle-outline" icon="menu" onClick={this.showDrawer} disabled={!this.state.isCanPlay} />
+                        <Button type="ghost" shape="circle-outline" icon="menu" onClick={() => this.changeSongPlayListStatus(true)} disabled={!this.state.isCanPlay} />
                         <audio ref={ref => (this.audio = ref)} id="audio" preload="metadata"
                             src={this.props.songUrl.url && this.props.songUrl.url}>
                         </audio>
@@ -263,33 +274,27 @@ class PlayerContainer extends Component {
                         disabled={!this.state.isCanPlay}
                     />
                 </div>
-                {/* <div className='songPlayListBox'> */}
-                {/* <Drawer
-                    title="Basic Drawer"
+                <Drawer
+                    title={drawerTitle}
                     placement='bottom'
                     closable={false}
-                    onClose={this.onClose}
+                    onClose={() => this.changeSongPlayListStatus(false)}
                     visible={this.state.isSongPlayListShow}
+                    height={500}
+                    maskClosable={true}
                 >
-                    <p>Some contents...</p>
-                    <p>Some contents...</p>
-                    <p>Some contents...</p>
-                </Drawer> */}
-                
-      <Drawer
-        className="my-drawer"
-        style={{ minHeight: document.documentElement.clientHeight }}
-        enableDragHandle
-        contentStyle={{ color: '#A6A6A6', textAlign: 'center', paddingTop: 42 }}
-        sidebar={sidebar}
-        open={this.state.isSongPlayListShow}
-        onOpenChange={this.showDrawer}
-        position='bottom'
-      >
-        Click upper-left corner
-      </Drawer>
-                {/* </div> */}
-
+                    <div className='drawerList'>
+                        {
+                            this.props.songPlayList.map((item, index) =>
+                                <p key={index} >
+                                    <span className={item.id === this.props.nowPlaySongId && "nowPlaySong"}>{item.name} - {item.ar.map((arItem, arIndex) => { return arItem.name + " " })}</span>
+                                    <Icon type="close" onClick={() => this.delSongPlayRow(item)} />
+                                </p>
+                            )
+                        }
+                    </div>
+                    <div className='colseDrawer' onClick={() => this.changeSongPlayListStatus(false)}>关闭</div>
+                </Drawer>
             </div>
         )
     }
@@ -300,6 +305,8 @@ const mapStateToProps = (state) => {
         songDetail: state.songDetail,
         nowPlaySongId: state.nowPlaySongId,
         songUrl: state.songUrl,
+        songPlayList: state.songPlayList,
+        songPlayListIds: state.songPlayListIds,
 
     }
 };
@@ -311,6 +318,12 @@ const mapDispatchToProps = (dispatch) => {
         },
         getSongUrl: (params, cb) => {
             return Service.getSongUrl(dispatch, params, cb);
+        },
+        getSongPlayList: (params, cb) => {
+            return Service.getSongPlayList(dispatch, params, cb);
+        },
+        changeSongPlayListIds: (params, cb) => {
+            return Service.changeSongPlayListIds(dispatch, params, cb);
         },
     }
 };

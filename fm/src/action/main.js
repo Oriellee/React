@@ -7,6 +7,7 @@ export const GET_TOP_ALBUM = "GET_TOP_ALBUM";
 export const GET_SONG_DETAIL = "GET_SONG_DETAIL";
 export const CHANGE_NOW_PLAY_SONG_ID = "CHANGE_NOW_PLAY_SONG_ID";
 export const GET_SONG_URL = "GET_SONG_URL";
+export const GET_SONG_PLAY_LIST_IDS = "GET_SONG_PLAY_LIST_IDS";
 export const GET_SONG_PLAY_LIST = "GET_SONG_PLAY_LIST";
 
 
@@ -62,6 +63,13 @@ export const receiveNowPlaySongId = data => {
 export const receiveSongUrl = data => {
     return {
         type: GET_SONG_URL,
+        data
+    }
+};
+
+export const receiveSongPlayListIds = data => {
+    return {
+        type: GET_SONG_PLAY_LIST_IDS,
         data
     }
 };
@@ -130,9 +138,18 @@ export function songDetail(state = {}, action) {
     }
 };
 
-const initSongPlayList = [254285];
+const initSongPlayListIds = [254285];
 
-export function songPlayList(state = initSongPlayList, action) {
+export function songPlayListIds(state = initSongPlayListIds, action) {
+    switch (action.type) {
+        case GET_SONG_PLAY_LIST_IDS:
+            return action.data;
+        default:
+            return state;
+    }
+};
+
+export function songPlayList(state = [], action) {
     switch (action.type) {
         case GET_SONG_PLAY_LIST:
             return action.data;
@@ -141,7 +158,7 @@ export function songPlayList(state = initSongPlayList, action) {
     }
 };
 
-export function nowPlaySongId(state = initSongPlayList[0], action) {
+export function nowPlaySongId(state = initSongPlayListIds[0], action) {
     switch (action.type) {
         case CHANGE_NOW_PLAY_SONG_ID:
             return action.data;
@@ -158,3 +175,4 @@ export function songUrl(state = {}, action) {
             return state;
     }
 };
+

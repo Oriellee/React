@@ -24,14 +24,12 @@ html {
 }
 
 .pageBox {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
   background-color: #ffffff;
   .topBox {
     position: fixed;
+    top: 0;
     z-index: 99;
-    width: calc(100% - 20px);
+    width: 100%;
     background-color: #ffffff;
     // box-shadow: 0px 0px 5px #cacaca;
     padding: ptr(20px) ptr(10px) ptr(10px);
@@ -119,7 +117,7 @@ html {
               margin-right: 0;
             }
             > div {
-              // border-radius: 10px;
+              border-radius: ptr(10px);
               overflow: hidden;
               position: relative;
               width: ptr(90px);
@@ -155,7 +153,7 @@ html {
       }
       .hotPlayList {
         margin-top: ptr(10px);
-        height: ptr(130px); // 也可以不设置高度，让高度自适应内容的变化
+        height: ptr(100px); // 也可以不设置高度，让高度自适应内容的变化
         overflow: hidden;
         .inner {
           height: 110%; // 高度实际为 300 * 110% = 330px
@@ -167,7 +165,7 @@ html {
             width: ptr(90px);
             height: ptr(90px);
             margin-right: ptr(10px);
-            padding: ptr(15px);
+            padding: ptr(10px);
             color: #ffffff;
             border-radius: 10px;
             overflow: hidden;
@@ -175,15 +173,21 @@ html {
               margin-right: 0;
             }
             > div {
+              width: 100%;
+              height: 100%;
+              display: flex;
+              flex-direction: column;
+              justify-content: space-between;
               > p {
                 font-size: ptr(16px);
                 margin-top: 0;
                 font-weight: 700;
-                margin-bottom: ptr(40px);
+                margin-bottom: 0;
               }
               > div {
                 display: flex;
                 flex-direction: column;
+                font-size: 10px;
               }
             }
           }
@@ -270,17 +274,44 @@ html {
     }
   }
 }
-.my-drawer {
-  position: relative;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
+.ant-drawer-content {
+  .drawerTitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    > div {
+      > i {
+        color: #989898;
+      }
+    }
+  }
+  .ant-drawer-body {
+    padding: 0;
+    .drawerList {
+      margin-bottom: ptr(50px);
+      > p {
+        padding: ptr(16px) ptr(24px);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #f3f3f3;
+        color: black;
+        > i {
+          color: #989898;
+        }
+      }
+    }
+    .colseDrawer {
+      position: fixed;
+      width: 100%;
+      padding: 15px;
+      bottom: 0;
+      left: 0;
+      text-align: center;
+      border-top: 1px solid #f3f3f3;
+    }
+  }
 }
-.my-drawer .am-drawer-sidebar {
-  background-color: #fff;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
-}
-.my-drawer .am-drawer-sidebar .am-list {
-  width: 300px;
-  padding: 0;
+.nowPlaySong {
+  color: #c56276;
 }

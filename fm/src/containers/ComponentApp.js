@@ -4,7 +4,6 @@ import HomeContainer from './HomeContainer';
 import TestContainer from './TestContainer';
 import PlayerContainer from './PlayerContainer';
 
-
 export default class extends Component {
     render() {
         return (
