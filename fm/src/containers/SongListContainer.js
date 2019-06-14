@@ -8,7 +8,7 @@ import CatList from '../components/main/CatList';
 import '../assets/styles/main.scss';
 import Service from '../services/service';
 
-class HomeContainer extends Component {
+class SongListContainer extends Component {
     constructor() {
         super()
         this.state = {
@@ -122,4 +122,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(HomeContainer)
+)(SongListContainer)
