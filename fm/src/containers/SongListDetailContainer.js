@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Icon,Anchor } from 'antd';
+import { Icon, Anchor, Drawer } from 'antd';
 import '../assets/styles/main.scss';
 import Service from '../services/service';
+import BackPrevious from '../components/backPrevious';
 
 class SongListDetailContainer extends Component {
     constructor() {
         super()
         this.state = {
-
+            isSongListInfoShow: false,
         }
     }
     componentDidMount() {
@@ -17,9 +18,14 @@ class SongListDetailContainer extends Component {
 
     getSongListDetail() {
         let params = {
-            id: this.props.location.query ? this.props.location.query.id : ""
+            id: this.props.match.params ? this.props.match.params.id : ""
         }
         this.props.getSongListDetail(params);
+    }
+    changeSongListInfoStatus = (status) => {
+        this.setState({
+            isSongListInfoShow: status
+        })
     }
 
 
@@ -29,9 +35,7 @@ class SongListDetailContainer extends Component {
                 <div className='songListInfo'>
                     <img className='songListInfoBg' src={this.props.songListDetail.coverImgUrl ? this.props.songListDetail.coverImgUrl : ""} />
                     <div className='songListInfoBody'>
-                        <div className='backIndexBtn'>
-                            <Icon type="arrow-left" />
-                        </div>
+                        <BackPrevious url='/home' />
                         <div className='songListInfoContent'>
                             <img className='songListImg' src={this.props.songListDetail.coverImgUrl && this.props.songListDetail.coverImgUrl} />
                             <div className='songListText'>
@@ -40,7 +44,12 @@ class SongListDetailContainer extends Component {
                                     <img src={this.props.songListDetail.creator && this.props.songListDetail.creator.avatarUrl} />
                                     <span>{this.props.songListDetail.creator && this.props.songListDetail.creator.nickname}</span>
                                 </div>
-                                <div>{this.props.songListDetail.description && this.props.songListDetail.description}</div>
+                                <div onClick={() => this.changeSongListInfoStatus(true)}>
+                                    <div>
+                                        {this.props.songListDetail.description && this.props.songListDetail.description}
+                                    </div>
+                                    <Icon type="right" />
+                                </div>
                             </div>
                         </div>
                         <div className='songListShow'>
@@ -85,6 +94,19 @@ class SongListDetailContainer extends Component {
                         )}
                     </div>
                 </div>
+                <Drawer
+                    title=""
+                    placement='right'
+                    closable={true}
+                    onClose={() => this.changeSongListInfoStatus(false)}
+                    visible={this.state.isSongListInfoShow}
+                    width="100%"
+                    maskClosable={true}
+                >
+                    <div className='songListInfoDrawer'>
+123123123
+                    </div>
+                </Drawer>
             </div>
         )
     }

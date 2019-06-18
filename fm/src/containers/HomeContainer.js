@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Icon } from 'antd';
 import { Carousel, WingBlank, Flex } from 'antd-mobile';
-import ContentTitle from '../components/main/ContentTitle';
-import HotPlayList from '../components/main/HotPlayList';
-import CatList from '../components/main/CatList';
+import ContentTitle from '../components/ContentTitle';
+import HotPlayList from '../components/HotPlayList';
+import CatList from '../components/CatList';
 import '../assets/styles/main.scss';
 import Service from '../services/service';
 
@@ -23,7 +23,7 @@ class HomeContainer extends Component {
         this.props.getPersonalized({});
         this.props.getTopAlbum({});
     }
-
+    
     // 切换顶端tab页.
     changeTab(tab) {
         this.setState({

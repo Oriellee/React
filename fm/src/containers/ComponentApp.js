@@ -13,7 +13,7 @@ export default class extends Component {
                     <Switch>
                         <Route path="/home" component={HomeContainer} />
                         <Route path="/test" component={TestContainer} />
-                        <Route path="/songListDetail" component={SongListDetailContainer} />
+                        <Route path="/songListDetail/:id" component={SongListDetailContainer} />
                     </Switch>
                 </div>
                 <PlayerContainer />

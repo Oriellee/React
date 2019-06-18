@@ -220,7 +220,7 @@ class PlayerContainer extends Component {
 
 
     render() {
-        const drawerTitle = <div className='drawerTitle'>
+        const songPlayListDrawerTitle = <div className='songPlayListDrawerTitle'>
             <span>播放列表({this.props.songPlayList.length}首)</span>
             <div>
                 <Icon type="delete" onClick={this.allDelSongPlayList} />
@@ -275,7 +275,7 @@ class PlayerContainer extends Component {
                     />
                 </div>
                 <Drawer
-                    title={drawerTitle}
+                    title={songPlayListDrawerTitle}
                     placement='bottom'
                     closable={false}
                     onClose={() => this.changeSongPlayListStatus(false)}
@@ -283,7 +283,7 @@ class PlayerContainer extends Component {
                     height={500}
                     maskClosable={true}
                 >
-                    <div className='drawerList'>
+                    <div className='songPlayListDrawer'>
                         {
                             this.props.songPlayList.map((item, index) =>
                                 <p key={index} >

@@ -110,7 +110,7 @@ html {
           .musicRow {
             display: inline-block;
             width: ptr(90px);
-            height: ptr(90px);
+            // height: ptr(90px);
             margin-right: ptr(10px);
 
             &:last-of-type {
@@ -147,6 +147,7 @@ html {
               overflow: hidden;
               text-overflow: ellipsis;
               white-space: nowrap;
+              color: #1a1a1a;
             }
           }
         }
@@ -275,7 +276,7 @@ html {
   }
 }
 .ant-drawer-content {
-  .drawerTitle {
+  .songPlayListDrawerTitle {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -287,7 +288,7 @@ html {
   }
   .ant-drawer-body {
     padding: 0;
-    .drawerList {
+    .songPlayListDrawer {
       margin-bottom: ptr(50px);
       > p {
         padding: ptr(16px) ptr(24px);
@@ -315,6 +316,14 @@ html {
 .nowPlaySong {
   color: #c56276;
 }
+.backPreviousBox {
+  display: inline-block;
+  color: #ffffff;
+  font-weight: bolder;
+  font-size: 20px;
+  line-height: 1.25rem;
+  margin-bottom: ptr(15px);
+}
 
 .songListBox {
   background-color: #ffffff;
@@ -333,13 +342,7 @@ html {
       top: 0;
       left: 0;
       padding: ptr(13px) ptr(20px);
-      > .backIndexBtn {
-        color: #ffffff;
-        font-weight: bolder;
-        font-size: 20px;
-        line-height: 1.25rem;
-        margin-bottom: ptr(15px);
-      }
+
       > .songListInfoContent {
         display: flex;
         justify-content: space-between;
@@ -377,14 +380,23 @@ html {
               }
             }
             &:nth-child(3) {
-              font-size: ptr(12px);
-              color: #c7b2a1;
-              display: -webkit-box;
-              -webkit-line-clamp: 2;
-              overflow: hidden;
-              /* autoprefixer: off */
-              -webkit-box-orient: vertical;
-              /* autoprefixer: on */
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              > div {
+                font-size: ptr(12px);
+                color: #c7b2a1;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                overflow: hidden;
+                /* autoprefixer: off */
+                -webkit-box-orient: vertical;
+                /* autoprefixer: on */
+              }
+              >i{
+                color: #c7b2a1;
+                margin-left: ptr(5px);
+              }
             }
           }
         }
@@ -412,14 +424,14 @@ html {
   }
   .songListTracks {
     background-color: #ffffff;
-    padding: ptr(10px) ptr(20px) 0 ptr(20px);
+    padding: 0;
     .ant-anchor-ink {
       height: 0;
     }
     .playAllBtn {
-      height: ptr(40px);
       display: flex;
       align-items: center;
+      padding: ptr(15px);
       .ant-anchor {
         display: flex;
         align-items: center;
@@ -441,16 +453,18 @@ html {
       }
     }
     > .songListBox {
-      // margin-top: ptr(30px);
       > .songListRow {
         width: 100%;
         display: flex;
         align-items: center;
         padding: ptr(10px) 0;
         > span {
+          display: block;
+          width: ptr(40px);
+          text-align: center;
+          margin: 0;
           color: #8d8d8d;
-          font-size: 15px;
-          margin-right: ptr(20px);
+          font-size: 12px;
         }
         > div {
           &:nth-child(2) {
@@ -472,6 +486,7 @@ html {
           &:nth-child(3) {
             display: flex;
             align-items: center;
+            margin-right: ptr(15px);
             > i {
               &:first-child {
                 margin-right: ptr(10px);
