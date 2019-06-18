@@ -1,5 +1,5 @@
 import extendsApi from './extendsApi';
-import { receiveBannerList, receiveHotPlayList, receiveHighQualityPlayList, receivePersonalized, receiveTopAlbum, receiveSongDetail, receiveSongUrl, receiveSongPlayList, receiveSongPlayListIds, receiveNowPlaySongId } from '../action/main';
+import { receiveBannerList, receiveHotPlayList, receiveHighQualityPlayList, receivePersonalized, receiveTopAlbum, receiveSongDetail, receiveSongUrl, receiveSongPlayList, receiveSongPlayListIds, receiveNowPlaySongId,receiveSongListDetail, } from '../action/main';
 import Apicfg from './Apis';
 var Apis = new Apicfg();
 
@@ -93,6 +93,16 @@ class Service extends extendsApi {
             dispatch(receiveNowPlaySongId(""))
         }
     }
+    getSongListDetail(dispatch, params, cb) {
+        let url = Apis.GET_SONG_LIST_DETAIL;
+        this.post(url, params).then(res => {
+            dispatch(receiveSongListDetail(res.data.playlist));
+            cb && cb();
+        }).catch(error => {
+
+        })
+    }
+
 }
 
 

@@ -13,6 +13,7 @@ class Apis {
         this.GET_SONG_DETAIL = "song/detail";//歌曲详情.
         this.GET_SONG_URL = "song/url";//播放歌曲的url.
         this.GET_SONG_PLAY_LIST = "song/detail";//获取歌曲播放列表详情.
+        this.GET_SONG_LIST_DETAIL = "playlist/detail"; //获取歌单详情.
     }
 }
 

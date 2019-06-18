@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import HomeContainer from './HomeContainer';
 import TestContainer from './TestContainer';
 import PlayerContainer from './PlayerContainer';
+import SongListDetailContainer from './SongListDetailContainer';
 
 export default class extends Component {
     render() {
@@ -12,6 +13,7 @@ export default class extends Component {
                     <Switch>
                         <Route path="/home" component={HomeContainer} />
                         <Route path="/test" component={TestContainer} />
+                        <Route path="/songListDetail" component={SongListDetailContainer} />
                     </Switch>
                 </div>
                 <PlayerContainer />
