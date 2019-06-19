@@ -102,9 +102,23 @@ class SongListDetailContainer extends Component {
                     visible={this.state.isSongListInfoShow}
                     width="100%"
                     maskClosable={true}
+                    bodyStyle={{}}
                 >
                     <div className='songListInfoDrawer'>
-123123123
+                        <img className='songListInfoDrawerBg' src={this.props.songListDetail.coverImgUrl ? this.props.songListDetail.coverImgUrl : ""} />
+                        <div className='songListInfoDrawerBody' style={{ backgroundImage: 'url(' + (this.props.songListDetail.coverImgUrl ? this.props.songListDetail.coverImgUrl : "") + ')' }}>
+                            <img className='songListInfoDrawerCover' src={this.props.songListDetail.coverImgUrl && this.props.songListDetail.coverImgUrl} />
+                            <h3 className='songListInfoDrawerTitle'>{this.props.songListDetail.name && this.props.songListDetail.name}</h3>
+                            <div className='songListInfoDrawerTags'>
+                                <span>标签:</span>
+                                {this.props.songListDetail.tags && this.props.songListDetail.tags.map((item, index) =>
+                                    <div>{item}</div>
+                                )}
+                            </div>
+                            <div className='songListInfoDrawerDesc'>
+                                <pre>{this.props.songListDetail.description && this.props.songListDetail.description}</pre>
+                            </div>
+                        </div>
                     </div>
                 </Drawer>
             </div>

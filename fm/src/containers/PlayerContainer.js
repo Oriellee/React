@@ -293,7 +293,7 @@ class PlayerContainer extends Component {
                             )
                         }
                     </div>
-                    <div className='colseDrawer' onClick={() => this.changeSongPlayListStatus(false)}>关闭</div>
+                    <div className='songPlayListColseDrawer' onClick={() => this.changeSongPlayListStatus(false)}>关闭</div>
                 </Drawer>
             </div>
         )

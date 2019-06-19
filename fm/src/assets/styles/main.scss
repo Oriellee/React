@@ -275,43 +275,42 @@ html {
     }
   }
 }
-.ant-drawer-content {
-  .songPlayListDrawerTitle {
+.songPlayListDrawerTitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  > div {
+    > i {
+      color: #989898;
+    }
+  }
+}
+.songPlayListDrawer {
+  margin-bottom: ptr(50px);
+  > p {
+    padding: ptr(16px) ptr(24px);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    > div {
-      > i {
-        color: #989898;
-      }
+    border-bottom: 1px solid #f3f3f3;
+    color: black;
+    > i {
+      color: #989898;
     }
   }
-  .ant-drawer-body {
-    padding: 0;
-    .songPlayListDrawer {
-      margin-bottom: ptr(50px);
-      > p {
-        padding: ptr(16px) ptr(24px);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 1px solid #f3f3f3;
-        color: black;
-        > i {
-          color: #989898;
-        }
-      }
-    }
-    .colseDrawer {
-      position: fixed;
-      width: 100%;
-      padding: 15px;
-      bottom: 0;
-      left: 0;
-      text-align: center;
-      border-top: 1px solid #f3f3f3;
-    }
-  }
+}
+.songPlayListColseDrawer {
+  position: fixed;
+  width: 100%;
+  padding: 15px;
+  bottom: 0;
+  left: 0;
+  text-align: center;
+  border-top: 1px solid #f3f3f3;
+}
+.ant-drawer-body {
+  padding: 0;
+  height: 100%;
 }
 .nowPlaySong {
   color: #c56276;
@@ -393,7 +392,7 @@ html {
                 -webkit-box-orient: vertical;
                 /* autoprefixer: on */
               }
-              >i{
+              > i {
                 color: #c7b2a1;
                 margin-left: ptr(5px);
               }
@@ -497,4 +496,67 @@ html {
       }
     }
   }
+}
+.songListInfoDrawer {
+  height: 100%;
+  position: relative;
+  overflow-x: hidden;
+  .songListInfoDrawerBg {
+    height: 100%;
+    filter: blur(100px);
+  }
+  .songListInfoDrawerBody {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: ptr(80px) ptr(30px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    > .songListInfoDrawerCover {
+      width: ptr(200px);
+      height: ptr(200px);
+    }
+    > .songListInfoDrawerTitle {
+      color: #ffffff;
+      font-weight: bolder;
+      font-size: ptr(18px);
+      margin: ptr(20px) auto ptr(30px);
+    }
+    .songListInfoDrawerTags {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      > span {
+        color: #ffffff;
+        font-size: 13px;
+        margin-right: ptr(10px);
+      }
+      > div {
+        margin: ptr(5px);
+        padding: 0 ptr(10px);
+        background-color: rgba($color: #ffffff, $alpha: 0.1);
+        border-radius: 30px;
+        color: #ffffff;
+      }
+    }
+    > .songListInfoDrawerDesc {
+      color: #ffffff;
+      font-size: ptr(13px);
+      margin-top: ptr(20px);
+      width: 100%;
+      > pre {
+        width: 100%;
+        white-space: pre-wrap; /*css-3*/
+        white-space: -moz-pre-wrap; /*Mozilla,since1999*/
+        white-space: -pre-wrap; /*Opera4-6*/
+        white-space: -o-pre-wrap; /*Opera7*/
+        word-wrap: break-word; /*InternetExplorer5.5+*/
+      }
+    }
+  }
+}
+.ant-drawer-close {
+  font-size: 20px;
+  color: #ffffff;
 }
