@@ -287,6 +287,8 @@ html {
 }
 .songPlayListDrawer {
   margin-bottom: ptr(50px);
+  height: ptr(395px);
+  overflow-y: auto;
   > p {
     padding: ptr(16px) ptr(24px);
     display: flex;
@@ -501,9 +503,11 @@ html {
   height: 100%;
   position: relative;
   overflow-x: hidden;
+  background-color: rgba($color: grey, $alpha: 0.2);
   .songListInfoDrawerBg {
     height: 100%;
     filter: blur(100px);
+    position: absolute;
   }
   .songListInfoDrawerBody {
     position: absolute;

@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Icon, Anchor, Drawer } from 'antd';
+import { Toast } from 'antd-mobile';
 import '../assets/styles/main.scss';
 import Service from '../services/service';
 import BackPrevious from '../components/backPrevious';
+import SongListBox from './songListBox';
 
 class SongListDetailContainer extends Component {
     constructor() {
@@ -11,21 +13,47 @@ class SongListDetailContainer extends Component {
         this.state = {
             isSongListInfoShow: false,
         }
+        this.playAll = this.playAll.bind(this);
     }
     componentDidMount() {
         this.getSongListDetail();
     }
 
+    // 获取歌曲详情.
     getSongListDetail() {
         let params = {
             id: this.props.match.params ? this.props.match.params.id : ""
         }
         this.props.getSongListDetail(params);
     }
+
+    // 修改歌曲详情信息页面的打开关闭.
     changeSongListInfoStatus = (status) => {
         this.setState({
             isSongListInfoShow: status
         })
+    }
+
+    // 播放全部.
+    playAll() {
+        let list = this.props.songListDetail ? [...this.props.songListDetail.tracks] : [];
+        console.log("aaaa",list)
+
+        if (list.length > 0) {
+            let songPlayListIds = [];
+            list.forEach((item, index) => {
+                songPlayListIds.push(item.id);
+            })
+            let params = {
+                type: 1,//播放全部.
+                ids: songPlayListIds
+            }
+            this.props.changeSongPlayListIds(params,()=>{
+                console.log(this.props)
+            });
+        } else {
+            Toast.info('列表为空~', 2, null, true);
+        }
     }
 
 
@@ -73,26 +101,12 @@ class SongListDetailContainer extends Component {
                     </div>
                 </div>
                 <div className='songListTracks'>
-                    <Anchor className='playAllBtn'>
-                        <Icon type="play-circle" />
+                    <Anchor className='playAllBtn' >
+                        <Icon type="play-circle" onClick={this.playAll} />
                         <span>播放全部</span>
                         <span>(共{this.props.songListDetail.tracks && this.props.songListDetail.tracks.length}首)</span>
                     </Anchor>
-                    <div className='songListBox'>
-                        {this.props.songListDetail.tracks && this.props.songListDetail.tracks.map((item, index) =>
-                            <div key={index} className='songListRow'>
-                                <span>{index + 1}</span>
-                                <div>
-                                    <span>{item.name}</span>
-                                    <span>{item.ar.map((arItem, arIndex) => { return arItem.name + " " })} - {item.al.name}</span>
-                                </div>
-                                <div>
-                                    <Icon type="play-square" />
-                                    <Icon type="more" />
-                                </div>
-                            </div>
-                        )}
-                    </div>
+                    <SongListBox {...this.props} />
                 </div>
                 <Drawer
                     title=""
@@ -106,13 +120,13 @@ class SongListDetailContainer extends Component {
                 >
                     <div className='songListInfoDrawer'>
                         <img className='songListInfoDrawerBg' src={this.props.songListDetail.coverImgUrl ? this.props.songListDetail.coverImgUrl : ""} />
-                        <div className='songListInfoDrawerBody' style={{ backgroundImage: 'url(' + (this.props.songListDetail.coverImgUrl ? this.props.songListDetail.coverImgUrl : "") + ')' }}>
+                        <div className='songListInfoDrawerBody'>
                             <img className='songListInfoDrawerCover' src={this.props.songListDetail.coverImgUrl && this.props.songListDetail.coverImgUrl} />
                             <h3 className='songListInfoDrawerTitle'>{this.props.songListDetail.name && this.props.songListDetail.name}</h3>
                             <div className='songListInfoDrawerTags'>
                                 <span>标签:</span>
                                 {this.props.songListDetail.tags && this.props.songListDetail.tags.map((item, index) =>
-                                    <div>{item}</div>
+                                    <div key={index}>{item}</div>
                                 )}
                             </div>
                             <div className='songListInfoDrawerDesc'>
@@ -128,7 +142,9 @@ class SongListDetailContainer extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        songListDetail: state.songListDetail
+        songListDetail: state.songListDetail,
+        songPlayListIds: state.songPlayListIds,
+        all:state
     }
 };
 
@@ -136,6 +152,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         getSongListDetail: (params, cb) => {
             return Service.getSongListDetail(dispatch, params, cb);
+        },
+        changeSongPlayListIds: (params, cb) => {
+            return Service.changeSongPlayListIds(dispatch, params, cb);
         },
     }
 };

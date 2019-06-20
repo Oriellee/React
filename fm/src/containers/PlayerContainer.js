@@ -26,18 +26,22 @@ class PlayerContainer extends Component {
             isCanPlay: false,
         }
         this.getSongPlayList = this.getSongPlayList.bind(this);
+        this.getSongUrl = this.getSongUrl.bind(this);
+        this.initSongSetting = this.initSongSetting.bind(this);
     }
 
     componentDidMount() {
-        this.getSongDetail();
-        this.getSongUrl();
-        this.initSongSetting();
+        console.log("runPlayer");
+        this.getSongDetail(this.props.nowPlaySongId);
+        // this.getSongUrl();
+        // this.initSongSetting();
         this.getSongPlayList();
     }
 
     componentWillReceiveProps(nextProps) {
+        console.log(nextProps.nowPlaySongId !== this.props.nowPlaySongId, nextProps.nowPlaySongId)
         if (nextProps.nowPlaySongId !== this.props.nowPlaySongId) {
-            this.getSongDetail();
+            this.getSongDetail(nextProps.nowPlaySongId);
         }
     }
 
@@ -45,6 +49,7 @@ class PlayerContainer extends Component {
     initSongSetting() {
         const audio = this.audio;
         audio.volume = 0.5;
+        console.log("audio===>",audio)
         // 这里需要设置audio的canplay事件监听
         audio.addEventListener("canplay", () => {
             //获取总时间
@@ -53,6 +58,7 @@ class PlayerContainer extends Component {
                 totalTime: this.getTime(totalTime),
                 isCanPlay: true,
             });
+            console.log("state====>",this.state)
         });
         // 播放中添加时间变化监听
         audio.addEventListener("timeupdate", () => {
@@ -67,9 +73,10 @@ class PlayerContainer extends Component {
                 // 未拖动时根据时间变化设置当前时间
                 this.setState({
                     currentTime: this.getTime(currentTime),
-                    progress: playWidth,
+                    // progress: playWidth,
                 });
             }
+            console.log('playWidth=====>',playWidth,audio.currentTime,audio.duration)
         });
 
         // 当前音乐播放完毕监听
@@ -157,11 +164,16 @@ class PlayerContainer extends Component {
     };
 
     // 获取歌曲详情.
-    getSongDetail() {
+    getSongDetail(id) {
+        console.log(this.state.progress)
+        this.setState({
+            progress: 0
+        })
         let params = {
-            ids: this.props.nowPlaySongId
+            ids: id
         }
-        this.props.getSongDetail(params);
+        console.log("params====>", params)
+        this.props.getSongDetail(params, this.getSongUrl);
     }
 
     // 获取播放歌曲url.
@@ -170,7 +182,7 @@ class PlayerContainer extends Component {
             id: this.props.nowPlaySongId,
             br: 320000,
         }
-        this.props.getSongUrl(params);
+        this.props.getSongUrl(params, this.initSongSetting);
     }
 
     // 根据列表id,获取所有列表歌曲详情.
@@ -205,17 +217,28 @@ class PlayerContainer extends Component {
     // 删除播放列表中的歌曲.
     delSongPlayRow(row) {
         let songPlayListIds = [...this.props.songPlayListIds];
+        let nowIndex;
         songPlayListIds.forEach((item, index) => {
             if (row.id === item) {
                 songPlayListIds.splice(index, 1);
+                nowIndex = index;
             }
         })
-        this.props.changeSongPlayListIds(songPlayListIds, this.getSongPlayList);
+        let params = {
+            type: 2,//删除单首歌曲,
+            ids: songPlayListIds,
+            nextPlayId: row.id === this.props.nowPlaySongId ? songPlayListIds[nowIndex] : this.props.nowPlaySongId
+        }
+        this.props.changeSongPlayListIds(params);
     }
 
     // 清空播放列表.
     allDelSongPlayList() {
-        this.props.changeSongPlayListIds([]);
+        let params = {
+            type: 3,//清空播放列表.
+            ids: [],
+        }
+        this.props.changeSongPlayListIds(params);
     }
 
 
@@ -287,7 +310,7 @@ class PlayerContainer extends Component {
                         {
                             this.props.songPlayList.map((item, index) =>
                                 <p key={index} >
-                                    <span className={item.id === this.props.nowPlaySongId && "nowPlaySong"}>{item.name} - {item.ar.map((arItem, arIndex) => { return arItem.name + " " })}</span>
+                                    <span className={(item.id === this.props.nowPlaySongId) && "nowPlaySong"}>{item.name} - {item.ar.map((arItem, arIndex) => { return arItem.name + " " })}</span>
                                     <Icon type="close" onClick={() => this.delSongPlayRow(item)} />
                                 </p>
                             )
