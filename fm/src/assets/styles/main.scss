@@ -296,6 +296,7 @@ html {
     align-items: center;
     border-bottom: 1px solid #f3f3f3;
     color: black;
+    margin: 0;
     > i {
       color: #989898;
     }
@@ -563,4 +564,50 @@ html {
 .ant-drawer-close {
   font-size: 20px;
   color: #ffffff;
+}
+.ant-drawer-header{
+  padding: ptr(15px) ptr(20px);
+}
+
+.playOperateDrawerTitle {
+  display: flex;
+  > img {
+    width: ptr(70px);
+    height: ptr(70px);
+    margin-right: ptr(15px);
+    border-radius: ptr(5px);
+  }
+  > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    > span {
+      &:first-child {
+        font-size: ptr(16px);
+        color: #3b3b3b;
+        margin-bottom: ptr(5px);
+      }
+      &:last-child {
+        font-size: ptr(14px);
+        color: #828282;
+      }
+    }
+  }
+}
+.playOperateDrawer {
+  > p {
+    padding: ptr(16px) ptr(24px);
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #f3f3f3;
+    color: black;
+    margin: 0;
+    > i {
+      color: #989898;
+      margin-right: ptr(10px);
+    }
+    &:last-child{
+      border: none;
+    }
+  }
 }
