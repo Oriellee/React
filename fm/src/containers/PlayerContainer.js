@@ -49,7 +49,6 @@ class PlayerContainer extends Component {
     initSongSetting() {
         const audio = this.audio;
         audio.volume = 0.5;
-        console.log("audio===>",audio)
         // 这里需要设置audio的canplay事件监听
         audio.addEventListener("canplay", () => {
             //获取总时间
@@ -58,25 +57,24 @@ class PlayerContainer extends Component {
                 totalTime: this.getTime(totalTime),
                 isCanPlay: true,
             });
-            console.log("state====>",this.state)
         });
         // 播放中添加时间变化监听
         audio.addEventListener("timeupdate", () => {
             const { processItemMove } = this.state;
             //获取当前播放时间
-            const currentTime = parseInt(audio.currentTime);
-
-            // 进度条.
-            const playWidth = 100 * (audio.currentTime / audio.duration);
-            // 如果正在拖动进度条的时候，不监听播放进度
-            if (!processItemMove) {
-                // 未拖动时根据时间变化设置当前时间
-                this.setState({
-                    currentTime: this.getTime(currentTime),
-                    // progress: playWidth,
-                });
+            if (audio.duration) {
+                const currentTime = parseInt(audio.currentTime);
+                // 进度条.
+                const playWidth = 100 * (audio.currentTime / audio.duration);
+                // 如果正在拖动进度条的时候，不监听播放进度
+                if (!processItemMove) {
+                    // 未拖动时根据时间变化设置当前时间
+                    this.setState({
+                        currentTime: this.getTime(currentTime),
+                        progress: playWidth,
+                    });
+                }
             }
-            console.log('playWidth=====>',playWidth,audio.currentTime,audio.duration)
         });
 
         // 当前音乐播放完毕监听
@@ -165,14 +163,12 @@ class PlayerContainer extends Component {
 
     // 获取歌曲详情.
     getSongDetail(id) {
-        console.log(this.state.progress)
         this.setState({
             progress: 0
         })
         let params = {
             ids: id
         }
-        console.log("params====>", params)
         this.props.getSongDetail(params, this.getSongUrl);
     }
 
@@ -275,7 +271,6 @@ class PlayerContainer extends Component {
                 </div>
                 <div className='playerProgress'>
                     <Slider
-                        style={{}}
                         value={this.state.progress}
                         onChange={this.changeProgress}
                         trackStyle={{
