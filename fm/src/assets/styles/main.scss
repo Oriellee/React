@@ -22,6 +22,9 @@ html {
   color: $centerFontColor;
   background-color: #ffffff;
 }
+body{
+  background-color: #ffffff;
+}
 
 .pageBox {
   background-color: #ffffff;
@@ -473,9 +476,9 @@ html {
             flex: 1;
             display: flex;
             flex-direction: column;
+            color: #3b3b3b;
             > span {
               &:first-child {
-                color: #3b3b3b;
                 font-size: ptr(14px);
                 margin-bottom: ptr(3px);
               }

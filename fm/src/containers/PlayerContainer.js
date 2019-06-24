@@ -28,10 +28,10 @@ class PlayerContainer extends Component {
         this.getSongPlayList = this.getSongPlayList.bind(this);
         this.getSongUrl = this.getSongUrl.bind(this);
         this.initSongSetting = this.initSongSetting.bind(this);
+        this.allDelSongPlayList = this.allDelSongPlayList.bind(this);
     }
 
     componentDidMount() {
-        console.log("runPlayer");
         this.getSongDetail(this.props.nowPlaySongId);
         // this.getSongUrl();
         // this.initSongSetting();
@@ -39,14 +39,17 @@ class PlayerContainer extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log(nextProps.nowPlaySongId !== this.props.nowPlaySongId, nextProps.nowPlaySongId)
-        if (nextProps.nowPlaySongId !== this.props.nowPlaySongId) {
+        if (nextProps.nowPlaySongId !== "" && nextProps.nowPlaySongId !== this.props.nowPlaySongId) {
             this.getSongDetail(nextProps.nowPlaySongId);
         }
     }
 
     // 初始化歌曲设置.
     initSongSetting() {
+        this.setState({
+            playStatus: false,
+            progress: 0,
+        })
         const audio = this.audio;
         audio.volume = 0.5;
         // 这里需要设置audio的canplay事件监听
@@ -220,12 +223,21 @@ class PlayerContainer extends Component {
                 nowIndex = index;
             }
         })
-        let params = {
-            type: 2,//删除单首歌曲,
-            ids: songPlayListIds,
-            nextPlayId: row.id === this.props.nowPlaySongId ? songPlayListIds[nowIndex] : this.props.nowPlaySongId
+        let params = {};
+        if (songPlayListIds.length > 0) {
+            params = {
+                type: 2,//删除单首歌曲,
+                ids: songPlayListIds,
+                nextPlayId: row.id === this.props.nowPlaySongId ? songPlayListIds[nowIndex] : this.props.nowPlaySongId
+            }
+        } else {
+            params = {
+                type: 3,//清空播放列表.
+                ids: [],
+            }
         }
         this.props.changeSongPlayListIds(params);
+
     }
 
     // 清空播放列表.
@@ -234,7 +246,7 @@ class PlayerContainer extends Component {
             type: 3,//清空播放列表.
             ids: [],
         }
-        this.props.changeSongPlayListIds(params);
+        this.props.changeSongPlayListIds(params, () => this.changeSongPlayListStatus(false));
     }
 
 
@@ -246,73 +258,77 @@ class PlayerContainer extends Component {
             </div>
         </div>
         return (
-            <div className='PlayerBox'>
-                <div className='playerOperate'>
-                    <div className='nowPlayInfo'>
-                        <div className='nowPlayInfoImg'>
-                            <img src={this.props.songDetail.al && this.props.songDetail.al.picUrl} alt='' />
+            <div>
+                {
+                    this.props.songPlayList.length > 0 && <div className='PlayerBox'>
+                        <div className='playerOperate'>
+                            <div className='nowPlayInfo'>
+                                <div className='nowPlayInfoImg'>
+                                    <img src={this.props.songDetail.al ? this.props.songDetail.al.picUrl : undefined} alt='' />
+                                </div>
+                                <div className='nowPlayInfoTitle'>
+                                    <span>{this.props.songDetail.name}</span>
+                                    <span>{this.props.songDetail.ar && this.props.songDetail.ar.map((item, index) => { return item.name + " " })}</span>
+                                </div>
+                            </div>
+                            <div className='nowPlayOption'>
+                                {
+                                    this.state.playStatus ?
+                                        <Button type="ghost" shape="circle-outline" icon="pause-circle" disabled={!this.state.isCanPlay} onClick={() => this.changePlayStatus(false)} />
+                                        : <Button type="ghost" shape="circle-outline" icon="play-circle" disabled={!this.state.isCanPlay} onClick={() => this.changePlayStatus(true)} />
+                                }
+                                <Button type="ghost" shape="circle-outline" icon="menu" onClick={() => this.changeSongPlayListStatus(true)} disabled={!this.state.isCanPlay} />
+                                <audio ref={ref => (this.audio = ref)} id="audio" preload="metadata"
+                                    src={this.props.songUrl.url ? this.props.songUrl.url : undefined}>
+                                </audio>
+                            </div>
                         </div>
-                        <div className='nowPlayInfoTitle'>
-                            <span>{this.props.songDetail.name}</span>
-                            <span>{this.props.songDetail.ar && this.props.songDetail.ar.map((item, index) => { return item.name + " " })}</span>
+                        <div className='playerProgress'>
+                            <Slider
+                                value={this.state.progress}
+                                onChange={this.changeProgress}
+                                trackStyle={{
+                                    backgroundColor: '#c56276',
+                                    height: '2px',
+                                }}
+                                railStyle={{
+                                    backgroundColor: '#5a5a5a',
+                                    height: '2px',
+                                }}
+                                handleStyle={{
+                                    height: '0px',
+                                    width: '0px',
+                                    marginLeft: '-3px',
+                                    marginTop: '0px',
+                                    backgroundColor: '#c56276',
+                                    borderColor: '#c56276',
+                                }}
+                                disabled={!this.state.isCanPlay}
+                            />
                         </div>
+                        <Drawer
+                            title={songPlayListDrawerTitle}
+                            placement='bottom'
+                            closable={false}
+                            onClose={() => this.changeSongPlayListStatus(false)}
+                            visible={this.state.isSongPlayListShow}
+                            height={500}
+                            maskClosable={true}
+                        >
+                            <div className='songPlayListDrawer'>
+                                {
+                                    this.props.songPlayList.map((item, index) =>
+                                        <p key={index} >
+                                            <span className={(item.id === this.props.nowPlaySongId) ? "nowPlaySong" : undefined}>{item.name} - {item.ar.map((arItem, arIndex) => { return arItem.name + " " })}</span>
+                                            <Icon type="close" onClick={() => this.delSongPlayRow(item)} />
+                                        </p>
+                                    )
+                                }
+                            </div>
+                            <div className='songPlayListColseDrawer' onClick={() => this.changeSongPlayListStatus(false)}>关闭</div>
+                        </Drawer>
                     </div>
-                    <div className='nowPlayOption'>
-                        {
-                            this.state.playStatus ?
-                                <Button type="ghost" shape="circle-outline" icon="pause-circle" disabled={!this.state.isCanPlay} onClick={() => this.changePlayStatus(false)} />
-                                : <Button type="ghost" shape="circle-outline" icon="play-circle" disabled={!this.state.isCanPlay} onClick={() => this.changePlayStatus(true)} />
-                        }
-                        <Button type="ghost" shape="circle-outline" icon="menu" onClick={() => this.changeSongPlayListStatus(true)} disabled={!this.state.isCanPlay} />
-                        <audio ref={ref => (this.audio = ref)} id="audio" preload="metadata"
-                            src={this.props.songUrl.url && this.props.songUrl.url}>
-                        </audio>
-                    </div>
-                </div>
-                <div className='playerProgress'>
-                    <Slider
-                        value={this.state.progress}
-                        onChange={this.changeProgress}
-                        trackStyle={{
-                            backgroundColor: '#c56276',
-                            height: '2px',
-                        }}
-                        railStyle={{
-                            backgroundColor: '#5a5a5a',
-                            height: '2px',
-                        }}
-                        handleStyle={{
-                            height: '0px',
-                            width: '0px',
-                            marginLeft: '-3px',
-                            marginTop: '0px',
-                            backgroundColor: '#c56276',
-                            borderColor: '#c56276',
-                        }}
-                        disabled={!this.state.isCanPlay}
-                    />
-                </div>
-                <Drawer
-                    title={songPlayListDrawerTitle}
-                    placement='bottom'
-                    closable={false}
-                    onClose={() => this.changeSongPlayListStatus(false)}
-                    visible={this.state.isSongPlayListShow}
-                    height={500}
-                    maskClosable={true}
-                >
-                    <div className='songPlayListDrawer'>
-                        {
-                            this.props.songPlayList.map((item, index) =>
-                                <p key={index} >
-                                    <span className={(item.id === this.props.nowPlaySongId) && "nowPlaySong"}>{item.name} - {item.ar.map((arItem, arIndex) => { return arItem.name + " " })}</span>
-                                    <Icon type="close" onClick={() => this.delSongPlayRow(item)} />
-                                </p>
-                            )
-                        }
-                    </div>
-                    <div className='songPlayListColseDrawer' onClick={() => this.changeSongPlayListStatus(false)}>关闭</div>
-                </Drawer>
+                }
             </div>
         )
     }

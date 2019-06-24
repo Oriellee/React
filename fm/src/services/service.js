@@ -92,6 +92,7 @@ class Service extends extendsApi {
             this.getSongPlayList(dispatch, newParams, (data) => {
                 dispatch(receiveNowPlaySongId(data[0].id));
             })
+            cb && cb();
         } else if (params.type === 2) {
             let newParams = {
                 ids: params.ids.join(","),
@@ -99,6 +100,7 @@ class Service extends extendsApi {
             this.getSongPlayList(dispatch, newParams, (data) => {
                 dispatch(receiveNowPlaySongId(params.nextPlayId));
             })
+            cb && cb();
         }
         else if (params.type === 3) {
             dispatch(receiveSongPlayList([]));
@@ -110,10 +112,10 @@ class Service extends extendsApi {
                 ids: params.ids.join(","),
             }
             this.getSongPlayList(dispatch, newParams, (data) => {
-                dispatch(receiveNowPlaySongId(params.nowPlayId));
+                params.nowPlayId && dispatch(receiveNowPlaySongId(params.nowPlayId));
             })
+            cb && cb();
         }
-        setTimeout(cb, 3000)
     }
     getSongListDetail(dispatch, params, cb) {
         let url = Apis.GET_SONG_LIST_DETAIL;

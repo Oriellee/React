@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { Icon, Drawer } from 'antd';
+import { connect } from 'react-redux';
+
+// import Service from '../services/service';
 
 class songListBox extends Component {
     constructor() {
@@ -7,7 +10,6 @@ class songListBox extends Component {
         this.state = {
             checkedSong: {},
             isplayOperateDrawerShow: false,
-
         }
     }
     // 修改抽屉状态.
@@ -16,8 +18,41 @@ class songListBox extends Component {
             isplayOperateDrawerShow: status,
             checkedSong: row ? row : {}
         }, () => {
-            console.log(this.state)
         })
+    }
+    // 播放选中歌曲.
+    changeNowPlaySong(row) {
+        let songPlayListIds = [...this.props.songPlayListIds];
+        let flag = true;
+        songPlayListIds.forEach((item, index) => {
+            if (item === row.id) {
+                flag = false;
+            }
+        })
+        flag && songPlayListIds.push(row.id);
+        let params = {
+            type: 4,//加入播放列表并且播放该歌曲,
+            ids: songPlayListIds,
+            nowPlayId: row.id,
+        }
+        this.props.changeSongPlayListIds(params);
+    }
+
+    // 添加下一首播放.
+    addNextPlaySong(row) {
+        let songPlayListIds = [...this.props.songPlayListIds];
+        let flag = true;
+        songPlayListIds.forEach((item, index) => {
+            if (item === row.id) {
+                flag = false;
+            }
+        })
+        flag && songPlayListIds.splice(songPlayListIds.indexOf(this.props.nowPlaySongId) + 1, 0, row.id);
+        let params = {
+            type: 4,//加入播放列表并且播放该歌曲,
+            ids: songPlayListIds,
+        }
+        this.props.changeSongPlayListIds(params, () => this.changePlayOperateDrawerStatus(false));
     }
     render() {
         const playOperateDrawerTitle =
@@ -31,15 +66,15 @@ class songListBox extends Component {
         return (
             <div className='songListBox'>
                 {this.props.songListDetail.tracks && this.props.songListDetail.tracks.map((item, index) =>
-                    <div key={index} className='songListRow' onClick={() => this.changePlayOperateDrawerStatus(true, item)}>
+                    <div key={index} className='songListRow' >
                         <span>{index + 1}</span>
-                        <div>
-                            <span>{item.name}</span>
+                        <div onClick={() => this.changeNowPlaySong(item)}>
+                            <span className={(item.id === this.props.nowPlaySongId) ? "nowPlaySong" : undefined}>{item.name}</span>
                             <span>{item.ar.map((arItem, arIndex) => { return arItem.name + " " })} - {item.al.name}</span>
                         </div>
                         <div>
                             <Icon type="play-square" />
-                            <Icon type="more" />
+                            <Icon type="more" onClick={() => this.changePlayOperateDrawerStatus(true, item)} />
                         </div>
                     </div>
                 )}
@@ -53,13 +88,14 @@ class songListBox extends Component {
                     maskClosable={true}
                 >
                     <div className='playOperateDrawer'>
-                        <p>
+                        <p onClick={() => this.addNextPlaySong(this.state.checkedSong)}>
                             <Icon type="play-circle" />
                             <span>下一首播放</span>
                         </p>
                         <p>
                             <Icon type="folder-add" />
                             <span>收藏到歌单</span>
+
                         </p>
                         <p>
                             <Icon type="download" />
@@ -89,4 +125,36 @@ class songListBox extends Component {
         )
     }
 }
-export default songListBox;
+
+const mapStateToProps = (state) => {
+    return {
+        // songDetail: state.songDetail,
+        nowPlaySongId: state.nowPlaySongId,
+        // songUrl: state.songUrl,
+        // songPlayList: state.songPlayList,
+        songPlayListIds: state.songPlayListIds,
+
+    }
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        // getSongDetail: (params, cb) => {
+        //     return Service.getSongDetail(dispatch, params, cb);
+        // },
+        // getSongUrl: (params, cb) => {
+        //     return Service.getSongUrl(dispatch, params, cb);
+        // },
+        // getSongPlayList: (params, cb) => {
+        //     return Service.getSongPlayList(dispatch, params, cb);
+        // },
+        // changeSongPlayListIds: (params, cb) => {
+        //     return Service.changeSongPlayListIds(dispatch, params, cb);
+        // },
+    }
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(songListBox)

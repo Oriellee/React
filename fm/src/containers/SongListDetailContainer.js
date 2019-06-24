@@ -61,15 +61,15 @@ class SongListDetailContainer extends Component {
         return (
             <div className='songListBox '>
                 <div className='songListInfo'>
-                    <img className='songListInfoBg' src={this.props.songListDetail.coverImgUrl ? this.props.songListDetail.coverImgUrl : ""} />
+                    <img alt='' className='songListInfoBg' src={this.props.songListDetail.coverImgUrl ? this.props.songListDetail.coverImgUrl : ""} />
                     <div className='songListInfoBody'>
                         <BackPrevious url='/home' />
                         <div className='songListInfoContent'>
-                            <img className='songListImg' src={this.props.songListDetail.coverImgUrl && this.props.songListDetail.coverImgUrl} />
+                            <img alt='' className='songListImg' src={this.props.songListDetail.coverImgUrl && this.props.songListDetail.coverImgUrl} />
                             <div className='songListText'>
                                 <h3>{this.props.songListDetail.name && this.props.songListDetail.name}</h3>
                                 <div className='auatarBox'>
-                                    <img src={this.props.songListDetail.creator && this.props.songListDetail.creator.avatarUrl} />
+                                    <img alt='' src={this.props.songListDetail.creator && this.props.songListDetail.creator.avatarUrl} />
                                     <span>{this.props.songListDetail.creator && this.props.songListDetail.creator.nickname}</span>
                                 </div>
                                 <div onClick={() => this.changeSongListInfoStatus(true)}>
@@ -119,9 +119,9 @@ class SongListDetailContainer extends Component {
                     bodyStyle={{}}
                 >
                     <div className='songListInfoDrawer'>
-                        <img className='songListInfoDrawerBg' src={this.props.songListDetail.coverImgUrl ? this.props.songListDetail.coverImgUrl : ""} />
+                        <img alt='' className='songListInfoDrawerBg' src={this.props.songListDetail.coverImgUrl ? this.props.songListDetail.coverImgUrl : ""} />
                         <div className='songListInfoDrawerBody'>
-                            <img className='songListInfoDrawerCover' src={this.props.songListDetail.coverImgUrl && this.props.songListDetail.coverImgUrl} />
+                            <img alt='' className='songListInfoDrawerCover' src={this.props.songListDetail.coverImgUrl && this.props.songListDetail.coverImgUrl} />
                             <h3 className='songListInfoDrawerTitle'>{this.props.songListDetail.name && this.props.songListDetail.name}</h3>
                             <div className='songListInfoDrawerTags'>
                                 <span>标签:</span>
