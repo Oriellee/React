@@ -65,6 +65,8 @@ module.exports = function(webpackEnv) {
   // Get environment variables to inject into our app.
   const env = getClientEnvironment(publicUrl);
 
+  const SentryPlugin = require('@sentry/webpack-plugin');
+
   // common function to get style loaders
   const getStyleLoaders = (cssOptions, preProcessor) => {
     const loaders = [
@@ -468,6 +470,11 @@ module.exports = function(webpackEnv) {
       ],
     },
     plugins: [
+      new SentryPlugin({
+        release: '001',
+        include: './build',
+        ignore: ['node_modules', 'webpack.config.js'],
+      }),
       // Generates an `index.html` file with the <script> injected.
       new HtmlWebpackPlugin(
         Object.assign(

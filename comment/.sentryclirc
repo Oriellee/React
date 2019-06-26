@@ -1,0 +1,7 @@
+[defaults]
+url=http://127.0.0.1:9000/
+org=sentry
+project=react
+
+[auth]
+token=68482aaeacf642c0b9b9acf26cba8c8b4c24719008014ee4b648cfb8f874df87
