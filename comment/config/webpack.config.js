@@ -472,7 +472,8 @@ module.exports = function(webpackEnv) {
     plugins: [
       new SentryPlugin({
         release: '001',
-        include: './build',
+        include: './build/static/js',
+        urlPrefix: 'file:///Users/oriel/Desktop/study/code/React/comment/build/static/js',
         ignore: ['node_modules', 'webpack.config.js'],
       }),
       // Generates an `index.html` file with the <script> injected.

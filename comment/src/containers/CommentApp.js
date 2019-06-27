@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import CommentInput from './CommentInput'
 import CommentList from './CommentList'
 
@@ -19,8 +19,9 @@ class CommentApp extends Component {
     render() {
         return (
             <div className='wrapper'>
-                <CommentInput/>
-                <CommentList/>
+                <CommentInput />
+                <CommentList />
+                <button onClick={() => { this.abc() }}>测试</button>
             </div>
         )
     }

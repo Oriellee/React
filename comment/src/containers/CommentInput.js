@@ -45,7 +45,6 @@ class CommentInputContainer extends Component {
     }
 
     render() {
-        console.log(this.aaa.mmm)
         return (
             <CommentInput username={this.state.username}
                           onSubmit={this.handleSubmitComment.bind(this)}
