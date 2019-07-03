@@ -22,7 +22,7 @@ html {
   color: $centerFontColor;
   background-color: #ffffff;
 }
-body{
+body {
   background-color: #ffffff;
 }
 
@@ -224,6 +224,7 @@ body{
     align-items: center;
     padding: 0;
     .nowPlayInfo {
+      width: calc(100% - 80px);
       display: flex;
       align-items: center;
       margin-left: ptr(10px);
@@ -239,6 +240,7 @@ body{
         }
       }
       .nowPlayInfoTitle {
+        width: calc(100% - 46px);
         display: flex;
         flex-direction: column;
         > span {
@@ -249,11 +251,15 @@ body{
           &:last-child {
             font-size: 10px;
             color: #686868;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
           }
         }
       }
     }
     .nowPlayOption {
+      width: ptr(80px);
       margin-right: ptr(12px);
       display: flex;
       align-items: center;
@@ -338,9 +344,10 @@ body{
     height: ptr(250px);
     overflow: hidden;
     position: relative;
+    background-color: rgba($color: black, $alpha: 0.2);
     .songListInfoBg {
-      filter: blur(30px);
       width: 100%;
+      filter: grayscale(20%) blur(40px);
     }
     .songListInfoBody {
       position: absolute;
@@ -390,11 +397,11 @@ body{
               justify-content: space-between;
               > div {
                 font-size: ptr(12px);
-                color: #c7b2a1;
+                color: #ecddd6;
                 display: -webkit-box;
                 -webkit-line-clamp: 2;
                 overflow: hidden;
-                /* autoprefixer: off */
+                /* autoprefixer: ignore next */
                 -webkit-box-orient: vertical;
                 /* autoprefixer: on */
               }
@@ -473,10 +480,11 @@ body{
         }
         > div {
           &:nth-child(2) {
-            flex: 1;
+            width: calc(100% - 100px);
             display: flex;
             flex-direction: column;
             color: #3b3b3b;
+            margin-right: ptr(5px);
             > span {
               &:first-child {
                 font-size: ptr(14px);
@@ -485,10 +493,14 @@ body{
               &:last-child {
                 color: #828282;
                 font-size: ptr(12px);
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
               }
             }
           }
           &:nth-child(3) {
+            width: ptr(40px);
             display: flex;
             align-items: center;
             margin-right: ptr(15px);
@@ -510,6 +522,7 @@ body{
   background-color: rgba($color: grey, $alpha: 0.2);
   .songListInfoDrawerBg {
     height: 100%;
+    width: 100%;
     filter: blur(100px);
     position: absolute;
   }
@@ -568,7 +581,7 @@ body{
   font-size: 20px;
   color: #ffffff;
 }
-.ant-drawer-header{
+.ant-drawer-header {
   padding: ptr(15px) ptr(20px);
 }
 
@@ -609,7 +622,7 @@ body{
       color: #989898;
       margin-right: ptr(10px);
     }
-    &:last-child{
+    &:last-child {
       border: none;
     }
   }

@@ -7,53 +7,36 @@ import Service from '../services/service';
 import BackPrevious from '../components/backPrevious';
 import SongListBox from './songListBox';
 
-class AlbumDetailContainer extends Component {
+class AlbumListDetailContainer extends Component {
     constructor() {
         super()
         this.state = {
-            isSongListInfoShow: false,
-            pageType: "",
-            pageId: "",
+            isDetailInfoShow: false,
         }
         this.playAll = this.playAll.bind(this);
     }
     componentDidMount() {
-        let pageInfo = this.props.match.params.data.splice("_");
-        let pageId = pageInfo[0];
-        let pageType = pageInfo[1];
-        this.setState({
-            pageId, pageType
-        }, () => {
-            pageType === 1 ? this.getSongListDetail() : this.getAlbumDetail();
-        })
-
-    }
-
-    // 获取专辑详情.
-    getAlbumDetail() {
-
+        this.getAlbumListDetail();
     }
 
     // 获取歌曲详情.
-    getSongListDetail() {
+    getAlbumListDetail() {
         let params = {
             id: this.props.match.params ? this.props.match.params.id : ""
         }
-        this.props.getSongListDetail(params);
+        this.props.getAlbumListDetail(params);
     }
 
     // 修改歌曲详情信息页面的打开关闭.
-    changeSongListInfoStatus = (status) => {
+    changeDetailnfoStatus = (status) => {
         this.setState({
-            isSongListInfoShow: status
+            isDetailInfoShow: status
         })
     }
 
     // 播放全部.
     playAll() {
-        let list = this.props.songListDetail ? [...this.props.songListDetail.tracks] : [];
-        console.log("aaaa", list)
-
+        let list = this.props.albumListDetail ? [...this.props.albumListDetail.tracks] : [];
         if (list.length > 0) {
             let songPlayListIds = [];
             list.forEach((item, index) => {
@@ -73,23 +56,25 @@ class AlbumDetailContainer extends Component {
 
 
     render() {
+        let albumInfo = this.props.albumListDetail.album ? this.props.albumListDetail.album : {};
+        let songList = this.props.albumListDetail.songs ? this.props.albumListDetail.songs : [];
         return (
             <div className='songListBox '>
                 <div className='songListInfo'>
-                    <img alt='' className='songListInfoBg' src={this.props.songListDetail.coverImgUrl ? this.props.songListDetail.coverImgUrl : ""} />
+                    <img alt='' className='songListInfoBg' src={albumInfo ? albumInfo.picUrl : ""} />
                     <div className='songListInfoBody'>
                         <BackPrevious url='/home' />
                         <div className='songListInfoContent'>
-                            <img alt='' className='songListImg' src={this.props.songListDetail.coverImgUrl && this.props.songListDetail.coverImgUrl} />
+                            <img alt='' className='songListImg' src={albumInfo && albumInfo.picUrl} />
                             <div className='songListText'>
-                                <h3>{this.props.songListDetail.name && this.props.songListDetail.name}</h3>
+                                <h3>{albumInfo.name}</h3>
                                 <div className='auatarBox'>
-                                    <img alt='' src={this.props.songListDetail.creator && this.props.songListDetail.creator.avatarUrl} />
-                                    <span>{this.props.songListDetail.creator && this.props.songListDetail.creator.nickname}</span>
+                                    {/* <img alt='' src={albumInfo && albumInfo.avatarUrl} /> */}
+                                    <span>歌手 : {albumInfo.artists && albumInfo.artists.map((item, index) => { return item.name + " " })}</span>
                                 </div>
-                                <div onClick={() => this.changeSongListInfoStatus(true)}>
+                                <div onClick={() => this.changeDetailnfoStatus(true)}>
                                     <div>
-                                        {this.props.songListDetail.description && this.props.songListDetail.description}
+                                        {albumInfo.description}
                                     </div>
                                     <Icon type="right" />
                                 </div>
@@ -98,19 +83,19 @@ class AlbumDetailContainer extends Component {
                         <div className='songListShow'>
                             <div>
                                 <Icon type="play-circle" />
-                                <span>{this.props.songListDetail.playCount && this.props.songListDetail.playCount}</span>
+                                <span>{albumInfo.info && albumInfo.info.commentThread.hotCount}</span>
                             </div>
                             <div>
                                 <Icon type="share-alt" />
-                                <span>{this.props.songListDetail.shareCount && this.props.songListDetail.shareCount}</span>
+                                <span>{albumInfo.info && albumInfo.info.commentThread.shareCount}</span>
                             </div>
                             <div>
                                 <Icon type="message" />
-                                <span>{this.props.songListDetail.commentCount && this.props.songListDetail.commentCount}</span>
+                                <span>{albumInfo.info && albumInfo.info.commentThread.commentCount}</span>
                             </div>
                             <div>
                                 <Icon type="heart" />
-                                <span>{this.props.songListDetail.subscribedCount && this.props.songListDetail.subscribedCount}</span>
+                                <span>{albumInfo.info && albumInfo.info.commentThread.likedCount}</span>
                             </div>
                         </div>
                     </div>
@@ -119,33 +104,33 @@ class AlbumDetailContainer extends Component {
                     <Anchor className='playAllBtn' >
                         <Icon type="play-circle" onClick={this.playAll} />
                         <span>播放全部</span>
-                        <span>(共{this.props.songListDetail.tracks && this.props.songListDetail.tracks.length}首)</span>
+                        <span>(共{songList && songList.length}首)</span>
                     </Anchor>
-                    <SongListBox {...this.props} />
+                    <SongListBox {...this.props} songList={songList} />
                 </div>
                 <Drawer
                     title=""
                     placement='right'
                     closable={true}
-                    onClose={() => this.changeSongListInfoStatus(false)}
-                    visible={this.state.isSongListInfoShow}
+                    onClose={() => this.changeDetailnfoStatus(false)}
+                    visible={this.state.isDetailInfoShow}
                     width="100%"
                     maskClosable={true}
                     bodyStyle={{}}
                 >
                     <div className='songListInfoDrawer'>
-                        <img alt='' className='songListInfoDrawerBg' src={this.props.songListDetail.coverImgUrl ? this.props.songListDetail.coverImgUrl : ""} />
+                        <img alt='' className='songListInfoDrawerBg' src={albumInfo.picUrl ? albumInfo.picUrl : ""} />
                         <div className='songListInfoDrawerBody'>
-                            <img alt='' className='songListInfoDrawerCover' src={this.props.songListDetail.coverImgUrl && this.props.songListDetail.coverImgUrl} />
-                            <h3 className='songListInfoDrawerTitle'>{this.props.songListDetail.name && this.props.songListDetail.name}</h3>
+                            <img alt='' className='songListInfoDrawerCover' src={albumInfo.picUrl && albumInfo.picUrl} />
+                            <h3 className='songListInfoDrawerTitle'>{albumInfo.name && albumInfo.name}</h3>
                             <div className='songListInfoDrawerTags'>
                                 <span>标签:</span>
-                                {this.props.songListDetail.tags && this.props.songListDetail.tags.map((item, index) =>
+                                {albumInfo.tags && albumInfo.tags.map((item, index) =>
                                     <div key={index}>{item}</div>
                                 )}
                             </div>
                             <div className='songListInfoDrawerDesc'>
-                                <pre>{this.props.songListDetail.description && this.props.songListDetail.description}</pre>
+                                <pre>{albumInfo.description && albumInfo.description}</pre>
                             </div>
                         </div>
                     </div>
@@ -157,7 +142,7 @@ class AlbumDetailContainer extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        songListDetail: state.songListDetail,
+        albumListDetail: state.albumListDetail,
         songPlayListIds: state.songPlayListIds,
         all: state
     }
@@ -165,8 +150,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getSongListDetail: (params, cb) => {
-            return Service.getSongListDetail(dispatch, params, cb);
+        getAlbumListDetail: (params, cb) => {
+            return Service.getAlbumListDetail(dispatch, params, cb);
         },
         changeSongPlayListIds: (params, cb) => {
             return Service.changeSongPlayListIds(dispatch, params, cb);
@@ -177,4 +162,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(AlbumDetailContainer)
+)(AlbumListDetailContainer)

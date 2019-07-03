@@ -10,6 +10,7 @@ export const GET_SONG_URL = "GET_SONG_URL";
 export const GET_SONG_PLAY_LIST_IDS = "GET_SONG_PLAY_LIST_IDS";
 export const GET_SONG_PLAY_LIST = "GET_SONG_PLAY_LIST";
 export const GET_SONG_LIST_DETAIL = "GET_SONG_LIST_DETAIL";
+export const GET_ALBUM_LIST_DETAIL="GET_ALBUM_LIST_DETAIL";
 
 
 //action creators
@@ -88,6 +89,14 @@ export const receiveSongListDetail = data => {
         data
     }
 };
+
+export const receiveAlbumListDetail = data => {
+    return {
+        type: GET_ALBUM_LIST_DETAIL,
+        data
+    }
+};
+
 
 
 
@@ -187,6 +196,15 @@ export function songUrl(state = {}, action) {
 export function songListDetail(state = {}, action) {
     switch (action.type) {
         case GET_SONG_LIST_DETAIL:
+            return action.data;
+        default:
+            return state;
+    }
+};
+
+export function albumListDetail(state = {}, action) {
+    switch (action.type) {
+        case GET_ALBUM_LIST_DETAIL:
             return action.data;
         default:
             return state;

@@ -65,7 +65,7 @@ class songListBox extends Component {
             </div>
         return (
             <div className='songListBox'>
-                {this.props.songListDetail.tracks && this.props.songListDetail.tracks.map((item, index) =>
+                {this.props.songList.map((item, index) =>
                     <div key={index} className='songListRow' >
                         <span>{index + 1}</span>
                         <div onClick={() => this.changeNowPlaySong(item)}>
@@ -84,7 +84,7 @@ class songListBox extends Component {
                     closable={false}
                     onClose={() => this.changePlayOperateDrawerStatus(false)}
                     visible={this.state.isplayOperateDrawerShow}
-                    height={530}
+                    height={600}
                     maskClosable={true}
                 >
                     <div className='playOperateDrawer'>

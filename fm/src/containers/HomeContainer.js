@@ -73,15 +73,15 @@ class HomeContainer extends Component {
                     </div>
                     <div className='listRow'>
                         <ContentTitle title="精品歌单" url='' />
-                        <CatList list={this.props.highQualityPlayList} name="name" url="coverImgUrl" />
+                        <CatList goto="/songListDetail/" list={this.props.highQualityPlayList} name="name" url="coverImgUrl" />
                     </div>
                     <div className='listRow'>
                         <ContentTitle title="推荐歌单" url='' />
-                        <CatList list={this.props.personalizedList} name="name" url="picUrl" />
+                        <CatList goto="/songListDetail/" list={this.props.personalizedList} name="name" url="picUrl" />
                     </div>
                     <div className='listRow'>
                         <ContentTitle title="新碟上架" url='' />
-                        <CatList list={this.props.topAlbum} name="name" url="picUrl" />
+                        <CatList goto="/albumListDetail/" list={this.props.topAlbum} name="name" url="picUrl" />
                     </div>
                 </div>
             </div>

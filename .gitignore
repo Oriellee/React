@@ -2,3 +2,4 @@
 tic-tac-toe/node_modules
 .idea
 NeteaseCloudMusicApi/
+.DS_Store

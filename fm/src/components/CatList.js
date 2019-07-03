@@ -12,7 +12,7 @@ export default class extends Component {
                 <div className='inner'>
                     {
                         this.props.list.map((item, index) =>
-                            <Link to={"/songListDetail/" + item.id} key={index} className='musicRow' >
+                            <Link to={this.props.goto + item.id} key={index} className='musicRow' >
                                 <div>
                                     <img alt='' src={item[this.props.url]} />
                                     <Icon type="play-circle" width={'1.25em'} height={'1.25em'} />
