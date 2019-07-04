@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 // import Service from '../services/service';
 
-class songListBox extends Component {
+class SongListBox extends Component {
     constructor() {
         super()
         this.state = {
@@ -12,6 +12,7 @@ class songListBox extends Component {
             isplayOperateDrawerShow: false,
         }
     }
+
     // 修改抽屉状态.
     changePlayOperateDrawerStatus(status, row) {
         this.setState({
@@ -57,10 +58,10 @@ class songListBox extends Component {
     render() {
         const playOperateDrawerTitle =
             <div className='playOperateDrawerTitle'>
-                <img src={this.state.checkedSong.al && this.state.checkedSong.al.picUrl} alt='' />
+                {this.state.checkedSong.al && <img src={this.state.checkedSong.al.picUrl} alt='' />}
                 <div>
                     <span>歌曲 : {this.state.checkedSong.name}</span>
-                    <span>{this.state.checkedSong.ar && this.state.checkedSong.ar.map((item, index) => { return item.name + " " })}</span>
+                    <span>{this.state.checkedSong.ar ? this.state.checkedSong.ar.map((arItem, arIndex) => { return arItem.name + " " }) : this.state.checkedSong.artists ? this.state.checkedSong.artists.map((arItem, arIndex) => { return arItem.name + " " }) : ""}</span>
                 </div>
             </div>
         return (
@@ -70,7 +71,7 @@ class songListBox extends Component {
                         <span>{index + 1}</span>
                         <div onClick={() => this.changeNowPlaySong(item)}>
                             <span className={(item.id === this.props.nowPlaySongId) ? "nowPlaySong" : undefined}>{item.name}</span>
-                            <span>{item.ar.map((arItem, arIndex) => { return arItem.name + " " })} - {item.al.name}</span>
+                            <span>{item.ar ? item.ar.map((arItem, arIndex) => { return arItem.name + " " }) : item.artists ? item.artists.map((arItem, arIndex) => { return arItem.name + " " }) : ""} - {item.al ? item.al.name : item.album ? item.album.name : ""}</span>
                         </div>
                         <div>
                             <Icon type="play-square" />
@@ -111,11 +112,11 @@ class songListBox extends Component {
                         </p>
                         <p>
                             <Icon type="user" />
-                            <span>歌手 : {this.state.checkedSong.ar && this.state.checkedSong.ar.map((arItem, arIndex) => { return arItem.name + " " })}</span>
+                            <span>歌手 : {this.state.checkedSong.ar ? this.state.checkedSong.ar.map((arItem, arIndex) => { return arItem.name + " " }) : this.state.checkedSong.artists ? this.state.checkedSong.artists.map((arItem, arIndex) => { return arItem.name + " " }) : ""}</span>
                         </p>
                         <p>
                             <Icon type="customer-service" />
-                            <span>专辑 : {this.state.checkedSong.al && this.state.checkedSong.al.name}</span>
+                            <span>专辑 : {this.state.checkedSong.al ? this.state.checkedSong.al.name : this.state.checkedSong.album ? this.state.checkedSong.album.name : ""}</span>
                         </p>
 
                     </div>
@@ -157,4 +158,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(songListBox)
+)(SongListBox)

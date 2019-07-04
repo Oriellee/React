@@ -5,7 +5,7 @@ import { Toast } from 'antd-mobile';
 import '../assets/styles/main.scss';
 import Service from '../services/service';
 import BackPrevious from '../components/backPrevious';
-import SongListBox from './songListBox';
+import SongListBox from './SongListBox';
 
 class AlbumListDetailContainer extends Component {
     constructor() {

@@ -59,6 +59,7 @@ body {
       font-size: ptr(14px);
       margin: ptr(10px) 0 0;
       text-align: center;
+      display: block;
       > span {
         margin-left: ptr(5px);
       }
@@ -110,49 +111,6 @@ body {
           height: 110%; // 高度实际为 300 * 110% = 330px
           overflow-x: auto;
           white-space: nowrap;
-          .musicRow {
-            display: inline-block;
-            width: ptr(90px);
-            // height: ptr(90px);
-            margin-right: ptr(10px);
-
-            &:last-of-type {
-              margin-right: 0;
-            }
-            > div {
-              border-radius: ptr(10px);
-              overflow: hidden;
-              position: relative;
-              width: ptr(90px);
-              height: ptr(90px);
-              color: #ffffff;
-              > img {
-                position: absolute;
-                width: 100%;
-                height: 100%;
-              }
-              > i {
-                position: absolute;
-                bottom: ptr(5px);
-                right: ptr(7px);
-                // width: ptr(20px);
-                // height: ptr(20px);
-              }
-              // > svg {
-              //   width: 100%;
-              //   height: 100%;
-              // }
-            }
-            > p {
-              margin: ptr(8px) ptr(3px);
-              font-weight: bold;
-              font-size: ptr(10px);
-              overflow: hidden;
-              text-overflow: ellipsis;
-              white-space: nowrap;
-              color: #1a1a1a;
-            }
-          }
         }
       }
       .hotPlayList {
@@ -464,51 +422,51 @@ body {
         }
       }
     }
-    > .songListBox {
-      > .songListRow {
-        width: 100%;
+  }
+}
+.songListBox {
+  > .songListRow {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: ptr(10px) 0;
+    > span {
+      display: block;
+      width: ptr(40px);
+      text-align: center;
+      margin: 0;
+      color: #8d8d8d;
+      font-size: 12px;
+    }
+    > div {
+      &:nth-child(2) {
+        width: calc(100% - 100px);
+        display: flex;
+        flex-direction: column;
+        color: #3b3b3b;
+        margin-right: ptr(5px);
+        > span {
+          &:first-child {
+            font-size: ptr(14px);
+            margin-bottom: ptr(3px);
+          }
+          &:last-child {
+            color: #828282;
+            font-size: ptr(12px);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+        }
+      }
+      &:nth-child(3) {
+        width: ptr(40px);
         display: flex;
         align-items: center;
-        padding: ptr(10px) 0;
-        > span {
-          display: block;
-          width: ptr(40px);
-          text-align: center;
-          margin: 0;
-          color: #8d8d8d;
-          font-size: 12px;
-        }
-        > div {
-          &:nth-child(2) {
-            width: calc(100% - 100px);
-            display: flex;
-            flex-direction: column;
-            color: #3b3b3b;
-            margin-right: ptr(5px);
-            > span {
-              &:first-child {
-                font-size: ptr(14px);
-                margin-bottom: ptr(3px);
-              }
-              &:last-child {
-                color: #828282;
-                font-size: ptr(12px);
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-              }
-            }
-          }
-          &:nth-child(3) {
-            width: ptr(40px);
-            display: flex;
-            align-items: center;
-            margin-right: ptr(15px);
-            > i {
-              &:first-child {
-                margin-right: ptr(10px);
-              }
-            }
+        margin-right: ptr(15px);
+        > i {
+          &:first-child {
+            margin-right: ptr(10px);
           }
         }
       }
@@ -624,6 +582,97 @@ body {
     }
     &:last-child {
       border: none;
+    }
+  }
+}
+
+.searchListBox {
+  .searchInfo {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    display: flex;
+    align-items: center;
+    padding: ptr(25px) ptr(20px) ptr(15px);
+    .backBox {
+      .backPreviousBox {
+        color: grey;
+        margin-right: ptr(15px);
+        margin-bottom: 0;
+      }
+    }
+  }
+  .searchContent {
+    margin-top: ptr(72px);
+  }
+}
+.musicRow {
+  display: inline-block;
+  width: ptr(90px);
+  // height: ptr(90px);
+  margin-right: ptr(10px);
+
+  &:last-of-type {
+    margin-right: 0;
+  }
+  > div {
+    border-radius: ptr(10px);
+    overflow: hidden;
+    position: relative;
+    width: ptr(90px);
+    height: ptr(90px);
+    color: #ffffff;
+    > img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+    > i {
+      position: absolute;
+      bottom: ptr(5px);
+      right: ptr(7px);
+      // width: ptr(20px);
+      // height: ptr(20px);
+    }
+    // > svg {
+    //   width: 100%;
+    //   height: 100%;
+    // }
+  }
+  > p {
+    margin: ptr(8px) ptr(3px);
+    font-weight: bold;
+    font-size: ptr(10px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #1a1a1a;
+  }
+}
+
+.songSquareBox {
+  .backBox {
+    padding: ptr(15px);
+    box-shadow: 0px 2px 10px rgba($color: #222, $alpha: 0.1);
+  }
+  .backPreviousBox {
+    color: grey;
+    margin-bottom: 0;
+  }
+  .songSquareContent {
+    padding: ptr(15px);
+    margin: ptr(0px) auto ptr(50px);
+    display: flex;
+    flex-wrap: wrap;
+    .musicRow {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 33%;
+      margin-right: 0;
+      >p{
+        width: 100%;
+      }
     }
   }
 }

@@ -1,5 +1,5 @@
 import extendsApi from './extendsApi';
-import { receiveBannerList, receiveHotPlayList, receiveHighQualityPlayList, receivePersonalized, receiveTopAlbum, receiveSongDetail, receiveSongUrl, receiveSongPlayList, receiveSongPlayListIds, receiveNowPlaySongId, receiveSongListDetail,receiveAlbumListDetail } from '../action/main';
+import { receiveBannerList, receiveHotPlayList, receiveHighQualityPlayList, receivePersonalized, receiveTopAlbum, receiveSongDetail, receiveSongUrl, receiveSongPlayList, receiveSongPlayListIds, receiveNowPlaySongId, receiveSongListDetail, receiveAlbumListDetail, receiveSearchList, receiveSongSquare } from '../action/main';
 import Apicfg from './Apis';
 var Apis = new Apicfg();
 
@@ -131,6 +131,43 @@ class Service extends extendsApi {
         let url = Apis.GET_ALBUM_LIST_DETAIL;
         this.get(url, params).then(res => {
             dispatch(receiveAlbumListDetail(res.data));
+            cb && cb();
+        }).catch(error => {
+
+        })
+    }
+
+    getSearchList(dispatch, params, cb) {
+        if (params) {
+            let url = Apis.GET_SEARCH_LIST;
+            this.get(url, params).then(res => {
+                dispatch(receiveSearchList(res.data.result));
+                cb && cb();
+            }).catch(error => {
+
+            })
+        } else {
+            dispatch(receiveSearchList({}));
+        }
+    }
+    getSongSquare(dispatch, params, cb) {
+        let url;
+        let text, newParams;
+        if (params.cat === "1") {
+            url = Apis.GET_HIGH_QUALITY_PLAY_LIST;
+            text = 'playlists';
+            newParams = {};
+        } else if (params.cat === "2") {
+            url = Apis.GET_PERSONALIZED;
+            text = 'result';
+            newParams = {};
+        } else {
+            url = Apis.GET_SONG_SQUARE;
+            text = 'playlists';
+            newParams = params;
+        }
+        this.get(url, newParams).then(res => {
+            dispatch(receiveSongSquare(res.data[text]));
             cb && cb();
         }).catch(error => {
 

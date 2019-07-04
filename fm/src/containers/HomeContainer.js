@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from "react-router-dom";
 import { Icon } from 'antd';
 import { Carousel, WingBlank, Flex } from 'antd-mobile';
 import ContentTitle from '../components/ContentTitle';
@@ -23,14 +24,13 @@ class HomeContainer extends Component {
         this.props.getPersonalized({});
         this.props.getTopAlbum({});
     }
-    
+
     // 切换顶端tab页.
     changeTab(tab) {
         this.setState({
             checkedTab: tab
         })
     }
-
 
     render() {
         return (
@@ -45,10 +45,10 @@ class HomeContainer extends Component {
                         </div>
                         <Icon type="plus" />
                     </Flex>
-                    <div className='searchBox'>
+                    <Link to='/search' className='searchBox' >
                         <Icon type="search" />
                         <span>搜索</span>
-                    </div>
+                    </Link>
                 </div>
                 <div className='content'>
                     <div className="carousel">
@@ -72,11 +72,11 @@ class HomeContainer extends Component {
                         <HotPlayList list={this.props.hotPlayList} />
                     </div>
                     <div className='listRow'>
-                        <ContentTitle title="精品歌单" url='' />
+                        <ContentTitle title="精品歌单" url='/songsSquare/1' />
                         <CatList goto="/songListDetail/" list={this.props.highQualityPlayList} name="name" url="coverImgUrl" />
                     </div>
                     <div className='listRow'>
-                        <ContentTitle title="推荐歌单" url='' />
+                        <ContentTitle title="推荐歌单" url='/songsSquare/2' />
                         <CatList goto="/songListDetail/" list={this.props.personalizedList} name="name" url="picUrl" />
                     </div>
                     <div className='listRow'>

@@ -10,8 +10,9 @@ export const GET_SONG_URL = "GET_SONG_URL";
 export const GET_SONG_PLAY_LIST_IDS = "GET_SONG_PLAY_LIST_IDS";
 export const GET_SONG_PLAY_LIST = "GET_SONG_PLAY_LIST";
 export const GET_SONG_LIST_DETAIL = "GET_SONG_LIST_DETAIL";
-export const GET_ALBUM_LIST_DETAIL="GET_ALBUM_LIST_DETAIL";
-
+export const GET_ALBUM_LIST_DETAIL = "GET_ALBUM_LIST_DETAIL";
+export const GET_SEARCH_LIST = "GET_SEARCH_LIST";
+export const GET_SONG_SQUARE="GET_SONG_SQUARE";
 
 //action creators
 export const receiveBannerList = data => {
@@ -93,6 +94,20 @@ export const receiveSongListDetail = data => {
 export const receiveAlbumListDetail = data => {
     return {
         type: GET_ALBUM_LIST_DETAIL,
+        data
+    }
+};
+
+export const receiveSearchList = data => {
+    return {
+        type: GET_SEARCH_LIST,
+        data
+    }
+};
+
+export const receiveSongSquare = data => {
+    return {
+        type: GET_SONG_SQUARE,
         data
     }
 };
@@ -211,3 +226,20 @@ export function albumListDetail(state = {}, action) {
     }
 };
 
+export function searchList(state = {}, action) {
+    switch (action.type) {
+        case GET_SEARCH_LIST:
+            return action.data;
+        default:
+            return state;
+    }
+};
+
+export function songSquare(state = [], action) {
+    switch (action.type) {
+        case GET_SONG_SQUARE:
+            return action.data;
+        default:
+            return state;
+    }
+};

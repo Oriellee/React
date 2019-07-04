@@ -5,6 +5,8 @@ import TestContainer from './TestContainer';
 import PlayerContainer from './PlayerContainer';
 import SongListDetailContainer from './SongListDetailContainer';
 import AlbumListDetailContainer from './AlbumListDetailContainer';
+import SearchListContainer from './SearchListContainer';
+import SongsSquareContainer from './SongsSquareContainer';
 
 export default class extends Component {
     render() {
@@ -16,6 +18,8 @@ export default class extends Component {
                         <Route path="/test" component={TestContainer} />
                         <Route path="/songListDetail/:id" component={SongListDetailContainer} />
                         <Route path="/albumListDetail/:id" component={AlbumListDetailContainer} />
+                        <Route path="/search" component={SearchListContainer} />
+                        <Route path="/songsSquare/:type" component={SongsSquareContainer} />
                     </Switch>
                 </div>
                 <PlayerContainer />

@@ -5,7 +5,7 @@ import { Toast } from 'antd-mobile';
 import '../assets/styles/main.scss';
 import Service from '../services/service';
 import BackPrevious from '../components/backPrevious';
-import SongListBox from './songListBox';
+import SongListBox from './SongListBox';
 
 class SongListDetailContainer extends Component {
     constructor() {
@@ -22,7 +22,7 @@ class SongListDetailContainer extends Component {
     // 获取歌曲详情.
     getSongListDetail() {
         let params = {
-            id: this.props.match.params ? this.props.match.params.id : ""
+            id: this.props.match.params ? this.props.match.params.type : ""
         }
         this.props.getSongListDetail(params);
     }
