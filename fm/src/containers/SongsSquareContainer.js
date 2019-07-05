@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Icon, Input } from 'antd';
+import {} from 'antd';
 import '../assets/styles/main.scss';
 import Service from '../services/service';
 import BackPrevious from '../components/backPrevious';

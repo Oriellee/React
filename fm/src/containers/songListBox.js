@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Icon, Drawer } from 'antd';
 import { connect } from 'react-redux';
 
-// import Service from '../services/service';
+import Service from '../services/service';
 
 class SongListBox extends Component {
     constructor() {
@@ -19,6 +19,7 @@ class SongListBox extends Component {
             isplayOperateDrawerShow: status,
             checkedSong: row ? row : {}
         }, () => {
+            this.props.changeDraweShowState(status)
         })
     }
     // 播放选中歌曲.
@@ -65,7 +66,7 @@ class SongListBox extends Component {
                 </div>
             </div>
         return (
-            <div className='songListBox'>
+            <div className={this.props.draweShowState?'songListBox hideContent':'songListBox'}>
                 {this.props.songList.map((item, index) =>
                     <div key={index} className='songListRow' >
                         <span>{index + 1}</span>
@@ -134,12 +135,16 @@ const mapStateToProps = (state) => {
         // songUrl: state.songUrl,
         // songPlayList: state.songPlayList,
         songPlayListIds: state.songPlayListIds,
+        draweShowState:state.draweShowState,
 
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        changeDraweShowState: (params, cb) => {
+            return Service.changeDraweShowState(dispatch, params, cb);
+        },
         // getSongDetail: (params, cb) => {
         //     return Service.getSongDetail(dispatch, params, cb);
         // },

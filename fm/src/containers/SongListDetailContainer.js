@@ -22,7 +22,7 @@ class SongListDetailContainer extends Component {
     // 获取歌曲详情.
     getSongListDetail() {
         let params = {
-            id: this.props.match.params ? this.props.match.params.type : ""
+            id: this.props.match.params ? this.props.match.params.id : ""
         }
         this.props.getSongListDetail(params);
     }
@@ -31,6 +31,8 @@ class SongListDetailContainer extends Component {
     changeSongListInfoStatus = (status) => {
         this.setState({
             isSongListInfoShow: status
+        },()=>{
+            this.props.changeDraweShowState(status)
         })
     }
 
@@ -60,7 +62,7 @@ class SongListDetailContainer extends Component {
     render() {
         let songListDetail = this.props.songListDetail;
         return (
-            <div className='songListBox '>
+            <div className={this.props.draweShowState?'songListBox hideContent':'songListBox'}>
                 <div className='songListInfo'>
                     <img alt='' className='songListInfoBg' src={songListDetail.coverImgUrl ? songListDetail.coverImgUrl : ""} />
                     <div className='songListInfoBody'>
@@ -145,7 +147,7 @@ const mapStateToProps = (state) => {
     return {
         songListDetail: state.songListDetail,
         songPlayListIds: state.songPlayListIds,
-        all: state
+        draweShowState:state.draweShowState,
     }
 };
 
@@ -156,6 +158,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         changeSongPlayListIds: (params, cb) => {
             return Service.changeSongPlayListIds(dispatch, params, cb);
+        },
+        changeDraweShowState: (params, cb) => {
+            return Service.changeDraweShowState(dispatch, params, cb);
         },
     }
 };

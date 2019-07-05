@@ -29,6 +29,8 @@ class PlayerContainer extends Component {
         this.getSongUrl = this.getSongUrl.bind(this);
         this.initSongSetting = this.initSongSetting.bind(this);
         this.allDelSongPlayList = this.allDelSongPlayList.bind(this);
+        this.changeNowPlaySong = this.changeNowPlaySong.bind(this);
+        this.onSwitchAction = this.onSwitchAction.bind(this);
     }
 
     componentDidMount() {
@@ -47,11 +49,11 @@ class PlayerContainer extends Component {
     // 初始化歌曲设置.
     initSongSetting() {
         this.setState({
-            playStatus: false,
+            // playStatus: false,
             progress: 0,
         })
         const audio = this.audio;
-        audio.volume = 0.5;
+        audio.volume = 0.2;
         // 这里需要设置audio的canplay事件监听
         audio.addEventListener("canplay", () => {
             //获取总时间
@@ -60,6 +62,7 @@ class PlayerContainer extends Component {
                 totalTime: this.getTime(totalTime),
                 isCanPlay: true,
             });
+            this.onSwitchAction();
         });
         // 播放中添加时间变化监听
         audio.addEventListener("timeupdate", () => {
@@ -87,6 +90,19 @@ class PlayerContainer extends Component {
 
     }
     endedPlayMusic() {
+        let songPlayListIds = this.props.songPlayListIds;
+        let nowPlaySongId = this.props.nowPlaySongId;
+        if (songPlayListIds.length > 0 && nowPlaySongId) {
+            const currentIndex = songPlayListIds.findIndex(item => {
+                return item === nowPlaySongId;
+            });
+            if ([currentIndex + 1]) {
+                this.changeNowPlaySong({ id: songPlayListIds[currentIndex + 1] })
+            } else {
+                this.changeNowPlaySong({ id: songPlayListIds[0] })
+            }
+        }
+
         // const { playMode, currentMusic } = this.state;
         // const { musicList } = this.state;
         // if (musicList.length > 0 && currentMusic) {
@@ -248,6 +264,23 @@ class PlayerContainer extends Component {
         }
         this.props.changeSongPlayListIds(params, () => this.changeSongPlayListStatus(false));
     }
+    // 播放选中歌曲.
+    changeNowPlaySong(row) {
+        let songPlayListIds = [...this.props.songPlayListIds];
+        let flag = true;
+        songPlayListIds.forEach((item, index) => {
+            if (item === row.id) {
+                flag = false;
+            }
+        })
+        flag && songPlayListIds.push(row.id);
+        let params = {
+            type: 4,//加入播放列表并且播放该歌曲,
+            ids: songPlayListIds,
+            nowPlayId: row.id,
+        }
+        this.props.changeSongPlayListIds(params);
+    }
 
 
     render() {
@@ -318,7 +351,7 @@ class PlayerContainer extends Component {
                             <div className='songPlayListDrawer'>
                                 {
                                     this.props.songPlayList.map((item, index) =>
-                                        <p key={index} >
+                                        <p key={index} onClick={() => this.changeNowPlaySong(item)}>
                                             <span className={(item.id === this.props.nowPlaySongId) ? "nowPlaySong" : undefined}>{item.name} - {item.ar.map((arItem, arIndex) => { return arItem.name + " " })}</span>
                                             <Icon type="close" onClick={() => this.delSongPlayRow(item)} />
                                         </p>

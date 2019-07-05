@@ -1,5 +1,5 @@
 import extendsApi from './extendsApi';
-import { receiveBannerList, receiveHotPlayList, receiveHighQualityPlayList, receivePersonalized, receiveTopAlbum, receiveSongDetail, receiveSongUrl, receiveSongPlayList, receiveSongPlayListIds, receiveNowPlaySongId, receiveSongListDetail, receiveAlbumListDetail, receiveSearchList, receiveSongSquare } from '../action/main';
+import { receiveBannerList, receiveHotPlayList, receiveHighQualityPlayList, receivePersonalized, receiveTopAlbum, receiveSongDetail, receiveSongUrl, receiveSongPlayList, receiveSongPlayListIds, receiveNowPlaySongId, receiveSongListDetail, receiveAlbumListDetail, receiveSearchList, receiveSongSquare, receiveDraweShowState } from '../action/main';
 import Apicfg from './Apis';
 var Apis = new Apicfg();
 
@@ -172,6 +172,9 @@ class Service extends extendsApi {
         }).catch(error => {
 
         })
+    }
+    changeDraweShowState(dispatch, params, cb) {
+        dispatch(receiveDraweShowState(params));
     }
 
 }

@@ -94,11 +94,12 @@ body {
       .contentTitle {
         display: flex;
         justify-content: space-between;
+        align-items: center;
         > div {
           font-size: ptr(15px);
           font-weight: bolder;
         }
-        > span {
+        > a {
           font-size: ptr(10px);
           color: lightgrey;
         }
@@ -172,8 +173,6 @@ body {
   height: ptr(50px);
   border-top: 1px solid #eaeaea;
   background-color: #ffffff;
-  .playerProgress {
-  }
   .playerOperate {
     width: 100%;
     height: calc(100% - 2px);
@@ -198,13 +197,16 @@ body {
         }
       }
       .nowPlayInfoTitle {
-        width: calc(100% - 46px);
+        width: calc(100% - 50px);
         display: flex;
         flex-direction: column;
         > span {
           &:first-child {
             font-size: 13px;
             margin-bottom: ptr(5px);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
           }
           &:last-child {
             font-size: 10px;
@@ -444,11 +446,14 @@ body {
         display: flex;
         flex-direction: column;
         color: #3b3b3b;
-        margin-right: ptr(5px);
+        margin-right: ptr(10px);
         > span {
           &:first-child {
             font-size: ptr(14px);
             margin-bottom: ptr(3px);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
           }
           &:last-child {
             color: #828282;
@@ -675,4 +680,7 @@ body {
       }
     }
   }
+}
+.hideContent{
+  overflow: hidden;
 }

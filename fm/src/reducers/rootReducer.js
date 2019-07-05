@@ -14,6 +14,7 @@ import {
     albumListDetail,
     searchList,
     songSquare,
+    draweShowState,
 } from '../action/main';
 
 const rootReducer = combineReducers({
@@ -31,6 +32,7 @@ const rootReducer = combineReducers({
     albumListDetail,
     searchList,
     songSquare,
+    draweShowState,
 });
 
 export default rootReducer;

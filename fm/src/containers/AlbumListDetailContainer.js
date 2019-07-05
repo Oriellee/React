@@ -31,6 +31,8 @@ class AlbumListDetailContainer extends Component {
     changeDetailnfoStatus = (status) => {
         this.setState({
             isDetailInfoShow: status
+        },()=>{
+            this.props.changeDraweShowState(status)
         })
     }
 
@@ -59,7 +61,7 @@ class AlbumListDetailContainer extends Component {
         let albumInfo = this.props.albumListDetail.album ? this.props.albumListDetail.album : {};
         let songList = this.props.albumListDetail.songs ? this.props.albumListDetail.songs : [];
         return (
-            <div className='songListBox '>
+            <div className={this.props.draweShowState?'songListBox hideContent':'songListBox'}>
                 <div className='songListInfo'>
                     <img alt='' className='songListInfoBg' src={albumInfo ? albumInfo.picUrl : ""} />
                     <div className='songListInfoBody'>
@@ -144,7 +146,7 @@ const mapStateToProps = (state) => {
     return {
         albumListDetail: state.albumListDetail,
         songPlayListIds: state.songPlayListIds,
-        all: state
+        draweShowState:state.draweShowState,
     }
 };
 
@@ -155,6 +157,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         changeSongPlayListIds: (params, cb) => {
             return Service.changeSongPlayListIds(dispatch, params, cb);
+        },
+        changeDraweShowState: (params, cb) => {
+            return Service.changeDraweShowState(dispatch, params, cb);
         },
     }
 };
