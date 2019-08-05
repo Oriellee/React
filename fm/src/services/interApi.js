@@ -34,7 +34,6 @@ function sendAll (arr) { // 顺序和请求发送的顺序相同，使用 axios.
       try {
         throw error
       } catch (e) {
-        // console.log(e)
       }
     }
   }

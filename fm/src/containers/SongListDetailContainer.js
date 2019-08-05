@@ -39,8 +39,6 @@ class SongListDetailContainer extends Component {
     // 播放全部.
     playAll() {
         let list = this.props.songListDetail ? [...this.props.songListDetail.tracks] : [];
-        console.log("aaaa", list)
-
         if (list.length > 0) {
             let songPlayListIds = [];
             list.forEach((item, index) => {
@@ -51,7 +49,6 @@ class SongListDetailContainer extends Component {
                 ids: songPlayListIds
             }
             this.props.changeSongPlayListIds(params, () => {
-                console.log(this.props)
             });
         } else {
             Toast.info('列表为空~', 2, null, true);

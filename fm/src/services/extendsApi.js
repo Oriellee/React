@@ -27,7 +27,6 @@ class axiosApi {
             try {
                 throw error
             } catch (e) {
-                // console.log(e)
             }
         }
     }
@@ -40,7 +39,6 @@ class axiosApi {
             try {
                 throw error
             } catch (e) {
-                // console.log(e)
             }
         }
     }

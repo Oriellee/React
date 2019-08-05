@@ -49,7 +49,6 @@ class AlbumListDetailContainer extends Component {
                 ids: songPlayListIds
             }
             this.props.changeSongPlayListIds(params, () => {
-                console.log(this.props)
             });
         } else {
             Toast.info('列表为空~', 2, null, true);
