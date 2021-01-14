@@ -14,7 +14,7 @@ interface AppContextType {
     setCheckedType: (item: checkedType) => void;
     tableList: any[];
     setTableList: (arr: checkedType[]) => void;
-    handleQuery: () => void;
+    handleQuery: (data?: any) => void;
 
     pageSize: number;
     current: number;
@@ -28,9 +28,7 @@ function App(): JSX.Element {
     const [total, setTotal] = useState(0);
     const [checkedType, setCheckedType] = useState({});
 
-    const handleQuery = (): any => {
-        const [form] = Form.useForm();
-        const formData: any = form.getFieldsValue();
+    const handleQuery = (formData: any = {}): any => {
         interface ParamsInter {
             name: string;
             current: number;
@@ -41,11 +39,12 @@ function App(): JSX.Element {
             current,
             pageSize,
         };
-        async () => {
+        console.log('请求======》', formData);
+        (async () => {
             const result = await axios.post('https://hn.algolia.com/api/v1/search?query=redux', params);
             setTableList(result.data.list);
             setTotal(result.data.count);
-        };
+        })();
     };
 
     const onChangePaginations = (current: number): void => {
@@ -86,6 +85,8 @@ function App(): JSX.Element {
 
 const Search: React.FC = (): JSX.Element => {
     const { handleQuery } = useContext(AppContext) as AppContextType;
+    const [form] = Form.useForm();
+
     const layout = {
         labelCol: { span: 8 },
         wrapperCol: { span: 16 },
@@ -93,13 +94,18 @@ const Search: React.FC = (): JSX.Element => {
     const tailLayout = {
         wrapperCol: { offset: 8, span: 16 },
     };
+    const search = () => {
+        const formData: any = form.getFieldsValue();
+        console.log('formData=====>', formData);
+        handleQuery(formData);
+    };
     return (
         <Form {...layout} name="basic" initialValues={{ remember: true }}>
             <Form.Item label="菜品名称" name="name" rules={[{ required: true, message: '请输入菜品名称！' }]}>
                 <Input />
             </Form.Item>
             <Form.Item {...tailLayout}>
-                <Button type="primary" htmlType="submit" onClick={() => handleQuery()}>
+                <Button type="primary" htmlType="submit" onClick={() => search()}>
                     查询
                 </Button>
             </Form.Item>
@@ -111,20 +117,20 @@ const TypeList: React.FC = (): JSX.Element => {
     const [typeList, setTypeList] = useState([]);
     const { checkedType, setCheckedType } = useContext(AppContext) as AppContextType;
     const queryType = (): void => {
-        async () => {
+        (async () => {
             const result = await axios.post('https://hn.algolia.com/api/v1/search?query=redux');
             setTypeList(result.data);
-        };
+        })();
     };
 
     const delType = (item: AppContextType['checkedType']): void => {
         const param = {
             id: item.id,
         };
-        async () => {
+        (async () => {
             await axios.post('https://hn.algolia.com/api/v1/search?query=redux', param);
             queryType();
-        };
+        })();
     };
     useEffect(queryType);
     return (

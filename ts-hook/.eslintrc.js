@@ -5,6 +5,7 @@ module.exports = {
         'plugin:@typescript-eslint/recommended', // 使用来自@typescript-eslint/eslint-plugin的推荐规则
         'prettier/@typescript-eslint', // 使用 ESLint -config-prettier 禁用来自@typescript-eslint/ ESLint 与 prettier 冲突的 ESLint 规则
         'plugin:prettier/recommended',
+        'react-app',
     ],
     parserOptions: {
         ecmaVersion: 2018, // 允许解析最新的 ECMAScript 特性
@@ -13,6 +14,7 @@ module.exports = {
             jsx: true, // 允许对JSX进行解析
         },
     },
+    plugins: ['react-hooks'],
     rules: {
         // 自定义规则
         // e.g. "@typescript-eslint/explicit-function-return-type": "off",
