@@ -1,38 +1,72 @@
 .App {
     text-align: center;
-}
-
-.App-logo {
-    height: 40vmin;
-    pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-    .App-logo {
-        animation: App-logo-spin infinite 20s linear;
+    .App-header {
+        width: 100%;
+        border-bottom: 1px solid #e5e5e5;
+        padding: 10px 20px;
+        text-align: left;
     }
-}
-
-.App-header {
-    background-color: #282c34;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
-}
-
-.App-link {
-    color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
+    .App-Body {
+        .searchBox {
+            width: 500px;
+            padding: 30px 40px;
+        }
+        $typeBoxWidth: 200px;
+        .App-Content {
+            padding: 0 40px;
+            display: flex;
+            .typeBox {
+                width: $typeBoxWidth;
+                text-align: left;
+                border-radius: 6px;
+                border: 1px solid #d9d9d9;
+                margin-right: 20px;
+                .typeTitle {
+                    font-size: 16px;
+                    font-family: PingFangSC-Medium, PingFang SC;
+                    font-weight: 500;
+                    color: #000000;
+                    line-height: 22px;
+                    padding: 12px 20px;
+                    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                .typeList {
+                    padding: 10px 0;
+                    > div {
+                        padding: 10px 24px;
+                        display: flex;
+                        justify-content: space-between;
+                        font-size: 12px;
+                        font-weight: 500;
+                        margin: 0 10px;
+                        > div {
+                            > span {
+                                margin-right: 10px;
+                                display: inline-block;
+                                &:last-child {
+                                    margin-right: 0;
+                                }
+                            }
+                        }
+                        &.checked {
+                            background-color: #e6f7ff;
+                            color: #1890ff;
+                            border-right: 3px solid #1890ff;
+                        }
+                        > span {
+                            display: inline-block;
+                            flex-wrap: wrap;
+                            flex: 1;
+                        }
+                    }
+                }
+            }
+            .tableBox {
+                width: calc(100% - #{$typeBoxWidth});
+            }
+        }
     }
 }

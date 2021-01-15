@@ -1,25 +1,45 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Form, Input, Button, Table } from 'antd';
-import axios from 'axios';
+import { Form, Input, Button, Table, Modal } from 'antd';
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import Service from '../services/service';
 import './App.scss';
 
-const pageSize = 10;
 const AppContext = React.createContext({});
-interface checkedType {
+const TypeListContent = React.createContext({});
+
+interface checkedTypeInter {
     name: string;
     id: number;
 }
+interface TypeParamInter {
+    name: string;
+    id?: number | string;
+}
 interface AppContextType {
-    checkedType: checkedType;
-    setCheckedType: (item: checkedType) => void;
+    checkedType: checkedTypeInter;
+    setCheckedType: (item: checkedTypeInter) => void;
     tableList: any[];
-    setTableList: (arr: checkedType[]) => void;
-    handleQuery: (data?: any) => void;
+    setTableList: (arr: checkedTypeInter[]) => void;
+    handleQuery: () => void;
 
     pageSize: number;
     current: number;
     total: number;
     onChangePaginations: (current: number) => void;
+    form: any;
+}
+
+interface TypeListContentType {
+    isModalVisible: boolean;
+    changeModalStatus: (status: boolean) => void;
+    handleOk: (name: string) => void;
+    checkedType: checkedTypeInter;
+}
+
+interface TableParamsInter {
+    name: string;
+    current: number;
+    pageSize: number;
 }
 
 function App(): JSX.Element {
@@ -27,21 +47,19 @@ function App(): JSX.Element {
     const [current, setCurrent] = useState(0);
     const [total, setTotal] = useState(0);
     const [checkedType, setCheckedType] = useState({});
+    const [form] = Form.useForm();
+    const pageSize = 10;
 
-    const handleQuery = (formData: any = {}): any => {
-        interface ParamsInter {
-            name: string;
-            current: number;
-            pageSize: number;
-        }
-        const params: ParamsInter = {
+    const handleQuery = (): any => {
+        const formData = form.getFieldsValue();
+        const params: TableParamsInter = {
             name: formData.name,
             current,
             pageSize,
         };
         console.log('请求======》', formData);
         (async () => {
-            const result = await axios.post('https://hn.algolia.com/api/v1/search?query=redux', params);
+            const result: any = await Service.getTableList(params);
             setTableList(result.data.list);
             setTotal(result.data.count);
         })();
@@ -50,10 +68,7 @@ function App(): JSX.Element {
     const onChangePaginations = (current: number): void => {
         setCurrent(current);
     };
-
-    useEffect(handleQuery, []);
     useEffect(handleQuery, [current]);
-
     return (
         <AppContext.Provider
             value={{
@@ -61,21 +76,21 @@ function App(): JSX.Element {
                 tableList,
                 setTableList,
                 handleQuery,
-                pageSize: pageSize,
+                pageSize,
                 current,
                 total,
                 onChangePaginations,
+                setCheckedType,
+                form,
             }}
         >
             <div className="App">
-                <div className="App">
-                    <header className="App-header">食堂管理</header>
-                    <div className="App-Body">
-                        <Search />
-                        <div>
-                            <TypeList />
-                            <TableBox />
-                        </div>
+                <header className="App-header">食堂管理</header>
+                <div className="App-Body">
+                    <SearchBox />
+                    <div className="App-Content">
+                        <TypeListBox />
+                        <TableBox />
                     </div>
                 </div>
             </div>
@@ -83,43 +98,67 @@ function App(): JSX.Element {
     );
 }
 
-const Search: React.FC = (): JSX.Element => {
-    const { handleQuery } = useContext(AppContext) as AppContextType;
-    const [form] = Form.useForm();
-
+const SearchBox: React.FC = (): JSX.Element => {
+    const { handleQuery, form } = useContext(AppContext) as AppContextType;
     const layout = {
         labelCol: { span: 8 },
         wrapperCol: { span: 16 },
-    };
-    const tailLayout = {
-        wrapperCol: { offset: 8, span: 16 },
+        colon: true,
     };
     const search = () => {
-        const formData: any = form.getFieldsValue();
-        console.log('formData=====>', formData);
-        handleQuery(formData);
+        handleQuery();
     };
     return (
-        <Form {...layout} name="basic" initialValues={{ remember: true }}>
-            <Form.Item label="菜品名称" name="name" rules={[{ required: true, message: '请输入菜品名称！' }]}>
-                <Input />
-            </Form.Item>
-            <Form.Item {...tailLayout}>
-                <Button type="primary" htmlType="submit" onClick={() => search()}>
-                    查询
-                </Button>
-            </Form.Item>
-        </Form>
+        <div className="searchBox">
+            <Form {...layout} layout="inline" form={form} name="basic">
+                <Form.Item label="菜品名称" name="name" rules={[{ required: true, message: '请输入菜品名称！' }]}>
+                    <Input />
+                </Form.Item>
+                <Form.Item>
+                    <Button type="primary" htmlType="submit" onClick={() => search()}>
+                        查询
+                    </Button>
+                </Form.Item>
+            </Form>
+        </div>
     );
 };
 
-const TypeList: React.FC = (): JSX.Element => {
+const TypeListBox: React.FC = (): JSX.Element => {
+    const { checkedType, setCheckedType, handleQuery } = useContext(AppContext) as AppContextType;
     const [typeList, setTypeList] = useState([]);
-    const { checkedType, setCheckedType } = useContext(AppContext) as AppContextType;
+    const [isModalVisible, setIsModalVisible] = useState(false);
+
+    const changeModalStatus = (status: boolean, row: any = {}): void => {
+        setCheckedType(row);
+        setIsModalVisible(status);
+    };
+
+    const handleOk = (name: string) => {
+        const params: TypeParamInter = {
+            name,
+        };
+        (async () => {
+            let fun = Service.addType;
+            if (checkedType.id) {
+                params.id = checkedType.id;
+                fun = Service.updataType;
+            }
+            await fun(params);
+            queryType();
+        })();
+        setIsModalVisible(false);
+    };
+
     const queryType = (): void => {
         (async () => {
-            const result = await axios.post('https://hn.algolia.com/api/v1/search?query=redux');
-            setTypeList(result.data);
+            const result: any = await Service.getTypeList();
+            const list = result && result.data && result.data instanceof Array ? result.data : [];
+            setTypeList(list);
+            const flag = list.find((item: checkedTypeInter) => item.id === checkedType.id);
+            if (!flag && list.length > 0) {
+                setCheckedType(list[0]);
+            }
         })();
     };
 
@@ -128,23 +167,75 @@ const TypeList: React.FC = (): JSX.Element => {
             id: item.id,
         };
         (async () => {
-            await axios.post('https://hn.algolia.com/api/v1/search?query=redux', param);
+            await Service.delType(param);
             queryType();
         })();
     };
-    useEffect(queryType);
+
+    const changeCheckedType = (item: AppContextType['checkedType']): void => {
+        setCheckedType(item);
+        handleQuery();
+    };
+
+    useEffect(queryType, []);
+
     return (
-        <div className="leftTree">
-            <Button type="primary">新增类型</Button>
-            {typeList.map((item: AppContextType['checkedType'], index: number) => (
-                <div key={index}>
-                    <span onClick={() => setCheckedType(item)} className={checkedType.id === item.id ? 'checked' : ''}>
-                        {item.name}
-                    </span>
-                    <span onClick={() => delType(item)}>x</span>
+        <TypeListContent.Provider
+            value={{
+                isModalVisible,
+                checkedType,
+                changeModalStatus,
+                handleOk,
+            }}
+        >
+            <div className="typeBox">
+                <div className="typeTitle">
+                    菜品分类
+                    <Button type="default" onClick={() => changeModalStatus(true)}>
+                        +
+                    </Button>
                 </div>
-            ))}
-        </div>
+                <div className="typeList">
+                    {typeList.map((item: AppContextType['checkedType'], index: number) => (
+                        <div
+                            key={index}
+                            className={checkedType.id === item.id ? 'checked' : ''}
+                            onClick={() => changeCheckedType(item)}
+                        >
+                            <span>{item.name}</span>
+                            <div>
+                                <EditOutlined onClick={() => changeModalStatus(true, item)} />
+                                <DeleteOutlined onClick={() => delType(item)} />
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+            {isModalVisible ? <AddTypeModalBox /> : null}
+        </TypeListContent.Provider>
+    );
+};
+
+const AddTypeModalBox: React.FC = (): JSX.Element => {
+    const [name, setName] = useState('');
+    const { isModalVisible, checkedType, changeModalStatus, handleOk } = useContext(
+        TypeListContent,
+    ) as TypeListContentType;
+    const changeName = (e: any) => {
+        setName(e.target.value);
+    };
+    useEffect(() => {
+        setName(checkedType.name);
+    }, []);
+    return (
+        <Modal
+            title={checkedType.id ? '编辑分类' : '添加分类'}
+            visible={isModalVisible}
+            onOk={() => handleOk(name)}
+            onCancel={() => changeModalStatus(false)}
+        >
+            <Input value={name} onChange={changeName} />
+        </Modal>
     );
 };
 
@@ -159,7 +250,11 @@ const TableBox: React.FC = (): JSX.Element => {
     };
     const columns: any[] = [];
 
-    return <Table rowKey="id" pagination={paginations} columns={columns} dataSource={tableList} />;
+    return (
+        <div className="tableBox">
+            <Table rowKey="id" pagination={paginations} columns={columns} dataSource={tableList} />
+        </div>
+    );
 };
 
 export default App;
