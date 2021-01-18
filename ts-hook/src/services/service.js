@@ -23,6 +23,18 @@ class Service extends extendsApi {
         let url = Apis.GET_TABLE_LIST;
         return this.get(url, params);
     };
+    addTable = (params) => {
+        let url = Apis.ADD_TABLE;
+        return this.get(url, params);
+    };
+    updataTable = (params) => {
+        let url = Apis.UPDATA_TABLE;
+        return this.get(url, params);
+    };
+    delTable = (params) => {
+        let url = Apis.DEL_TABLE;
+        return this.get(url, params);
+    };
 }
 
 export default new Service();

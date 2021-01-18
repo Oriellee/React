@@ -20,6 +20,8 @@ module.exports = {
         // e.g. "@typescript-eslint/explicit-function-return-type": "off",
         'react-hooks/rules-of-hooks': 'error',
         'react-hooks/exhaustive-deps': 'warn', // <--- THIS IS THE NEW RULEs
+        'no-unused-vars': ['warn', { varsIgnorePattern: '^_' }],
+        '@typescript-eslint/no-unused-vars': ['warn', { varsIgnorePattern: '^_' }],
     },
     settings: {
         react: {
