@@ -13,59 +13,75 @@
         }
         $typeBoxWidth: 200px;
         .App-Content {
-            padding: 0 40px;
-            display: flex;
-            .typeBox {
-                width: $typeBoxWidth;
-                text-align: left;
-                border-radius: 6px;
-                border: 1px solid #d9d9d9;
-                margin-right: 20px;
-                .typeTitle {
-                    font-size: 16px;
-                    font-family: PingFangSC-Medium, PingFang SC;
-                    font-weight: 500;
-                    color: #000000;
-                    line-height: 22px;
-                    padding: 12px 20px;
-                    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
+            > div {
+                padding: 0 40px;
+                display: flex;
+                &:first-child {
+                    justify-content: flex-end;
+                    margin-bottom: 20px;
                 }
-                .typeList {
-                    padding: 10px 0;
-                    > div {
-                        padding: 10px 24px;
+                .typeBox {
+                    width: $typeBoxWidth;
+                    text-align: left;
+                    border-radius: 6px;
+                    border: 1px solid #d9d9d9;
+                    margin-right: 20px;
+                    .typeTitle {
+                        font-size: 16px;
+                        font-family: PingFangSC-Medium, PingFang SC;
+                        font-weight: 500;
+                        color: #000000;
+                        line-height: 22px;
+                        padding: 12px 20px;
+                        border-bottom: 1px solid rgba(0, 0, 0, 0.15);
                         display: flex;
                         justify-content: space-between;
-                        font-size: 12px;
-                        font-weight: 500;
-                        margin: 0 10px;
+                        align-items: center;
+                    }
+                    .typeList {
+                        padding: 10px 0;
                         > div {
-                            > span {
-                                margin-right: 10px;
-                                display: inline-block;
-                                &:last-child {
-                                    margin-right: 0;
+                            padding: 10px 24px;
+                            display: flex;
+                            justify-content: space-between;
+                            font-size: 12px;
+                            font-weight: 500;
+                            margin: 0 10px;
+                            > div {
+                                > span {
+                                    margin-right: 10px;
+                                    display: inline-block;
+                                    &:last-child {
+                                        margin-right: 0;
+                                    }
                                 }
                             }
-                        }
-                        &.checked {
-                            background-color: #e6f7ff;
-                            color: #1890ff;
-                            border-right: 3px solid #1890ff;
-                        }
-                        > span {
-                            display: inline-block;
-                            flex-wrap: wrap;
-                            flex: 1;
+                            &.checked {
+                                background-color: #e6f7ff;
+                                color: #1890ff;
+                                border-right: 3px solid #1890ff;
+                            }
+                            > span {
+                                display: inline-block;
+                                flex-wrap: wrap;
+                                flex: 1;
+                            }
                         }
                     }
                 }
+                .tableBox {
+                    width: calc(100% - #{$typeBoxWidth});
+                }
             }
-            .tableBox {
-                width: calc(100% - #{$typeBoxWidth});
+            .table-row-operation {
+                > span {
+                    color: #1890ff;
+                    margin-right: 10px;
+                    cursor: pointer;
+                    &:last-child {
+                        margin-right: 0;
+                    }
+                }
             }
         }
     }

@@ -1,8 +1,11 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Form, Input, Button, Table, Modal, Select } from 'antd';
+import { Form, Input, Button, Table, Modal, Select, Radio, InputNumber, message } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import Service from '../services/service';
 import './App.scss';
+
+const { Option } = Select;
+const { confirm } = Modal;
 
 const AppContext = React.createContext({});
 const TypeListContent = React.createContext({});
@@ -26,7 +29,7 @@ interface checkedRowInter {
 }
 interface AppContextType {
     checkedType: checkedTypeInter;
-    setCheckedType: (item: checkedTypeInter) => void;
+    setCheckedType: (row: checkedTypeInter) => void;
     tableList: any[];
     setTableList: (arr: checkedTypeInter[]) => void;
     handleQuery: () => void;
@@ -40,6 +43,9 @@ interface AppContextType {
     changeTableModalStatus: (status: boolean, row?: any) => void;
     checkedRow: checkedRowInter;
     addTablehandleOk: (data: any) => void;
+    typeList: any[];
+    setTypeList: (list: any[]) => void;
+    delTable: (data: checkedRowInter) => void;
 }
 
 interface TypeListContentType {
@@ -53,14 +59,15 @@ interface TableParamsInter {
     name: string;
     current: number;
     pageSize: number;
+    variety_type: number;
 }
 
 function App(): JSX.Element {
     const [typeList, setTypeList] = useState([]);
     const [tableList, setTableList] = useState([]);
-    const [current, setCurrent] = useState(0);
+    const [current, setCurrent] = useState(1);
     const [total, setTotal] = useState(0);
-    const [checkedType, setCheckedType] = useState({});
+    const [checkedType, setCheckedType] = useState({} as checkedTypeInter);
     const [isTableModalVisible, setTableModalVisible] = useState(false);
     const [checkedRow, setCheckedRow] = useState({} as checkedRowInter);
     const [form] = Form.useForm();
@@ -72,12 +79,12 @@ function App(): JSX.Element {
             name: formData.name,
             current,
             pageSize,
+            variety_type: checkedType.id,
         };
-        console.log('请求======》', formData);
         (async () => {
             const result: any = await Service.getTableList(params);
-            setTableList(result.data.list);
-            setTotal(result.data.count);
+            setTableList(result.data);
+            setTotal(result.data.length);
         })();
     };
 
@@ -91,10 +98,11 @@ function App(): JSX.Element {
     };
 
     const addTablehandleOk = (formData: any) => {
+        formData.status = formData.status === 1 ? true : false;
         (async () => {
             let fun = Service.addTable;
             if (checkedRow.variety_id) {
-                formData.id = checkedRow.variety_id;
+                formData.variety_id = checkedRow.variety_id;
                 fun = Service.updataTable;
             }
             await fun(formData);
@@ -102,7 +110,24 @@ function App(): JSX.Element {
         })();
         changeTableModalStatus(false);
     };
-    useEffect(handleQuery, [current]);
+
+    const delTable = (item: checkedRowInter) => {
+        confirm({
+            title: '删除',
+            content: '确认删除该菜品？',
+            onOk() {
+                const param = {
+                    id: item.variety_id,
+                };
+                (async () => {
+                    await Service.delTable(param);
+                    handleQuery();
+                })();
+            },
+        });
+    };
+    useEffect(handleQuery, [current, checkedType]);
+
     return (
         <AppContext.Provider
             value={{
@@ -122,18 +147,24 @@ function App(): JSX.Element {
                 addTablehandleOk,
                 typeList,
                 setTypeList,
+                delTable,
             }}
         >
             <div className="App">
                 <header className="App-header">食堂管理</header>
                 <div className="App-Body">
                     <SearchBox />
-                    <Button type="primary" htmlType="submit" onClick={() => changeTableModalStatus(true)}>
-                        添加食堂
-                    </Button>
                     <div className="App-Content">
-                        <TypeListBox />
-                        <TableBox />
+                        <div>
+                            <Button type="primary" htmlType="submit" onClick={() => changeTableModalStatus(true)}>
+                                添加食堂
+                            </Button>
+                        </div>
+
+                        <div>
+                            <TypeListBox />
+                            <TableBox />
+                        </div>
                     </div>
                 </div>
                 {isTableModalVisible ? <AddTableModalBox /> : null}
@@ -154,8 +185,8 @@ const AddTableModalBox: React.FC = (): JSX.Element => {
     } = useContext(AppContext) as AppContextType;
 
     const layout = {
-        labelCol: { span: 8 },
-        wrapperCol: { span: 16 },
+        labelCol: { span: 4 },
+        wrapperCol: { span: 20 },
         colon: true,
     };
 
@@ -163,12 +194,11 @@ const AddTableModalBox: React.FC = (): JSX.Element => {
         tableModalForm
             .validateFields()
             .then((values) => {
-                console.log('values====>', values);
                 const params = JSON.parse(JSON.stringify(values));
                 addTablehandleOk(params);
             })
             .catch((errorInfo) => {
-                console.log('err=======>', errorInfo);
+                message.error(errorInfo);
             });
     };
     useEffect(() => {
@@ -203,12 +233,12 @@ const AddTableModalBox: React.FC = (): JSX.Element => {
                     name="variety_type"
                     rules={[{ required: true, message: '请选择菜品分类！' }]}
                 >
-                    <Select style={{ width: 120 }}>
+                    <Select>
                         {typeList.map(
                             (item: checkedTypeInter): JSX.Element => {
                                 return (
-                                    <Option key={item.id} value="jack">
-                                        Jack
+                                    <Option key={item.id} value={item.id}>
+                                        {item.name}
                                     </Option>
                                 );
                             },
@@ -222,10 +252,13 @@ const AddTableModalBox: React.FC = (): JSX.Element => {
                     <Input />
                 </Form.Item>
                 <Form.Item label="状态" name="status" rules={[{ required: true, message: '请选择状态！' }]}>
-                    <Input />
+                    <Radio.Group>
+                        <Radio value={1}>开启</Radio>
+                        <Radio value={2}>关闭</Radio>
+                    </Radio.Group>
                 </Form.Item>
                 <Form.Item label="售价(元)" name="price" rules={[{ required: true, message: '请输入售价！' }]}>
-                    <Input />
+                    <InputNumber style={{ width: '100%' }} min={1} max={99999999} precision={1} />
                 </Form.Item>
             </Form>
         </Modal>
@@ -259,9 +292,7 @@ const SearchBox: React.FC = (): JSX.Element => {
 };
 
 const TypeListBox: React.FC = (): JSX.Element => {
-    const { checkedType, setCheckedType, handleQuery, typeList, setTypeList } = useContext(
-        AppContext,
-    ) as AppContextType;
+    const { checkedType, setCheckedType, typeList, setTypeList } = useContext(AppContext) as AppContextType;
     const [isModalVisible, setIsModalVisible] = useState(false);
 
     const changeModalStatus = (status: boolean, row: any = {}): void => {
@@ -298,18 +329,23 @@ const TypeListBox: React.FC = (): JSX.Element => {
     };
 
     const delType = (item: AppContextType['checkedType']): void => {
-        const param = {
-            id: item.id,
-        };
-        (async () => {
-            await Service.delType(param);
-            queryType();
-        })();
+        confirm({
+            title: '删除',
+            content: '确认删除该菜品？',
+            onOk() {
+                const param = {
+                    id: item.id,
+                };
+                (async () => {
+                    await Service.delType(param);
+                    queryType();
+                })();
+            },
+        });
     };
 
     const changeCheckedType = (item: AppContextType['checkedType']): void => {
         setCheckedType(item);
-        handleQuery();
     };
 
     useEffect(queryType, []);
@@ -375,7 +411,9 @@ const AddTypeModalBox: React.FC = (): JSX.Element => {
 };
 
 const TableBox: React.FC = (): JSX.Element => {
-    const { tableList, pageSize, current, total, onChangePaginations } = useContext(AppContext) as AppContextType;
+    const { tableList, pageSize, current, total, onChangePaginations, changeTableModalStatus, delTable } = useContext(
+        AppContext,
+    ) as AppContextType;
     const paginations: any = {
         pageSize,
         current,
@@ -383,30 +421,19 @@ const TableBox: React.FC = (): JSX.Element => {
         showQuickJumper: true,
         onChange: onChangePaginations,
     };
-
-    const editTableRow = (row: any): void => {
-        console.log('00000', row);
-    };
-
     const Operation = (_value: any, rowData: any) => {
         return (
             <div className="table-row-operation">
-                <span onClick={() => editTableRow(rowData)}>编辑</span>
-                <span onClick={() => editTableRow(rowData)}>删除</span>
+                <span onClick={() => changeTableModalStatus(true, rowData)}>编辑</span>
+                <span onClick={() => delTable(rowData)}>删除</span>
             </div>
         );
     };
     const columns: any[] = [
         {
-            title: '序号',
-            dataIndex: 'index',
-            key: 'index',
-        },
-        {
             title: '菜品ID',
             dataIndex: 'variety_id',
             key: 'variety_id',
-            width: 50,
         },
         {
             title: '菜品名称',
@@ -440,7 +467,6 @@ const TableBox: React.FC = (): JSX.Element => {
             render: Operation,
         },
     ];
-
     return (
         <div className="tableBox">
             <Table rowKey="id" pagination={paginations} columns={columns} dataSource={tableList} />
